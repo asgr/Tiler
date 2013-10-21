@@ -5,10 +5,10 @@ options(scipen=999)
 
 info=read.table(paste(basedir,'/SurveyInfo.txt',sep=''),header=T)
 
-RAadd=min(TileCat[TileCat[,'CLUSTER_NAME']%in%position,'RA'])
-Decadd=min(TileCat[TileCat[,'CLUSTER_NAME']%in%position,'DEC'])
-raran=max(TileCat[TileCat[,'CLUSTER_NAME']%in%position,'RA'])-min(TileCat[TileCat[,'CLUSTER_NAME']%in%position,'RA'])
-decran=max(TileCat[TileCat[,'CLUSTER_NAME']%in%position,'DEC'])-min(TileCat[TileCat[,'CLUSTER_NAME']%in%position,'DEC'])
+RAadd=min(TileCat[TileCat[,'POSITION']%in%position,'RA'])
+Decadd=min(TileCat[TileCat[,'POSITION']%in%position,'DEC'])
+raran=max(TileCat[TileCat[,'POSITION']%in%position,'RA'])-min(TileCat[TileCat[,'POSITION']%in%position,'RA'])
+decran=max(TileCat[TileCat[,'POSITION']%in%position,'DEC'])-min(TileCat[TileCat[,'POSITION']%in%position,'DEC'])
 loc=position
 skirt=info[1,'Skirt']
 year=info[1,'Year']
@@ -55,8 +55,8 @@ if(runfolder!=FALSE & runfolder!=TRUE){
 #Here I install (if required) and load the relevant packages- needs adjusting depending on your machine
 #if(!'fields' %in% installed.packages()[,'Package']){print('Installing required fields package');install.packages('fields')}
 #if(!'plotrix' %in% installed.packages()[,'Package']){print('Installing required plotrix package');install.packages('plotrix')}
-library('fields',lib=c('/home/aatlxa/gama/R/x86_64-redhat-linux-gnu-library/2.9/',.libPaths()))
-library('plotrix',lib=c('/home/aatlxa/gama/R/x86_64-redhat-linux-gnu-library/2.9/',.libPaths()))
+#library('fields',lib=c('/home/aatlxa/gama/R/x86_64-redhat-linux-gnu-library/2.9/',.libPaths()))
+#library('plotrix',lib=c('/home/aatlxa/gama/R/x86_64-redhat-linux-gnu-library/2.9/',.libPaths()))
 
 #Special function to cope with a sample size of only one value (i.e. it will only return that value)
 #resample <- function(x, size, ...)
@@ -69,8 +69,8 @@ shift=FALSE
 
 #If you're starting a fresh run then continue will be FALSE, otherwise it picks up from where it finished tiling
 if(continue==FALSE & tileplus>0){
-	TileSub=TileCat[TileCat[,'CLUSTER_NAME']%in%position & TileCat[,'PRIORITY_CLASS']>=minpri,'CATA_INDEX']
-	AssignOrder=cbind(TileCat[TileCat[,'PRIORITY_CLASS']>=minpri & TileCat[,'CLUSTER_NAME']%in%position,'CATA_INDEX'])
+	TileSub=TileCat[TileCat[,'POSITION']%in%position & TileCat[,'PRIORITY_CLASS']>=minpri,'CATA_INDEX']
+	AssignOrder=cbind(TileCat[TileCat[,'PRIORITY_CLASS']>=minpri & TileCat[,'POSITION']%in%position,'CATA_INDEX'])
 	AssignOrder=cbind(AssignOrder,rep(0,length(AssignOrder[,1])),TileCat[TileCat[,'CATA_INDEX'] %in% AssignOrder[,1],'PRIORITY_CLASS'])
 	MagLims={}
 	tilelim={}
@@ -121,7 +121,7 @@ testgrid=expand.grid(seq(RAadd+skirt,RAadd+raran-skirt,by=0.1),seq(Decadd+skirt,
 
 #Used to have (TileCat[,'S']>0 & TileCat[,'Q']>2), but I don't think we should have the latter 'Q'>2 since this is time dependent in effect
 if(byden | interact){
-	tempTilePos=TileCat[TileCat[,'SURVEY_CLASS']>=survey & TileCat[,'CLUSTER_NAME']%in%position,c('RA','DEC')]
+	tempTilePos=TileCat[TileCat[,'SURVEY_CLASS']>=survey & TileCat[,'POSITION']%in%position,c('RA','DEC')]
 	tartestPos={}
 	#find possible objects within a 1 deg radius (2dF) on the testgrid generated above- this limits the resolution at which possible field positions can be generated
 
@@ -160,7 +160,7 @@ if((continue==FALSE)){
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 #Various target selections as per Baldry 2010- I use SURVEY_CLASS to define my selection
-MSsel=TileCat[,'SURVEY_CLASS']>=survey & TileCat[,'CLUSTER_NAME']%in%position
+MSsel=TileCat[,'SURVEY_CLASS']>=survey & TileCat[,'POSITION']%in%position
 
 #The main loop starts here.
 if(tileplus>0){
@@ -238,9 +238,9 @@ tempTile=TileCat[TileCat[,'CATA_INDEX'] %in% TileSub & TileCat[,'PRIORITY_CLASS'
 		}
 
 		#Calculates the 0.1 magnitude bin completeness
-		magcompleteness=1-hist(TileCat[TileCat[,'R_PETRO']>15 & TileCat[,'R_PETRO']<24 & TileCat[,'PRIORITY_CLASS']>=denpri & TileCat[,'CLUSTER_NAME']%in%position & TileCat[,'CATA_INDEX'] %in% TileSub,'R_PETRO'],breaks=seq(15, 24,by=0.1),plot=FALSE)$counts/hist(TileCat[MSsel & TileCat[,'R_PETRO']>15 & TileCat[,'R_PETRO']<24,'R_PETRO'],breaks=seq(15, 24,by=0.1),plot=FALSE)$counts
+		magcompleteness=1-hist(TileCat[TileCat[,'R_PETRO']>15 & TileCat[,'R_PETRO']<24 & TileCat[,'PRIORITY_CLASS']>=denpri & TileCat[,'POSITION']%in%position & TileCat[,'CATA_INDEX'] %in% TileSub,'R_PETRO'],breaks=seq(15, 24,by=0.1),plot=FALSE)$counts/hist(TileCat[MSsel & TileCat[,'R_PETRO']>15 & TileCat[,'R_PETRO']<24,'R_PETRO'],breaks=seq(15, 24,by=0.1),plot=FALSE)$counts
 		#Calculates the new total completeness that is printed out to the tilelim object that tracks the progress of the tiling
-		completeness=1-length(TileCat[TileCat[,'PRIORITY_CLASS']>=denpri & TileCat[,'CLUSTER_NAME']%in%position & TileCat[,'CATA_INDEX'] %in% TileSub,1])/length(TileCat[MSsel,1])
+		completeness=1-length(TileCat[TileCat[,'PRIORITY_CLASS']>=denpri & TileCat[,'POSITION']%in%position & TileCat[,'CATA_INDEX'] %in% TileSub,1])/length(TileCat[MSsel,1])
 		#make MagLims in the format needed for MakCircDen
 		MagLims=rbind(MagLims,magcompleteness)
 
@@ -253,7 +253,7 @@ tempTile=TileCat[TileCat[,'CATA_INDEX'] %in% TileSub & TileCat[,'PRIORITY_CLASS'
 		check80=length(which(as.numeric(tempden$z)<=0.2))/length(as.numeric(tempden$z))
 		check80g5=length(which(as.numeric(tempden $z[tempden $allz>=5])<=0.2))/length(as.numeric(tempden $z[tempden $allz>=5]))
 		#Generate all of the tilelim information for the most recent tile placed and append it to the current tilelim
-		tilelim=rbind(tilelim,data.frame(No.=runs, Comp=completeness, RA=as.numeric(tileloc)[1], Dec=as.numeric(tileloc)[2], Left=length(TileCat[TileCat[,'PRIORITY_CLASS']>=denpri & TileCat[,'CLUSTER_NAME']%in%position & TileCat[,'CATA_INDEX'] %in% TileSub,1]), AngComp=check80,AngComp5=check80g5,Plate=plate[runs+1-startrun],Den=byden,Date=date(), Int=interact, Man=manual))
+		tilelim=rbind(tilelim,data.frame(No.=runs, Comp=completeness, RA=as.numeric(tileloc)[1], Dec=as.numeric(tileloc)[2], Left=length(TileCat[TileCat[,'PRIORITY_CLASS']>=denpri & TileCat[,'POSITION']%in%position & TileCat[,'CATA_INDEX'] %in% TileSub,1]), AngComp=check80,AngComp5=check80g5,Plate=plate[runs+1-startrun],Den=byden,Date=date(), Int=interact, Man=manual))
 		#Generate stopstate- the object containing all the information about the survey in R form
 		stopstate=list(assign=AssignOrder,maglim=MagLims,tilelim=tilelim,current=installed.packages()['Tiler','Version'],loc=loc,args=arguments,catname=catname,fibstats=fibstats)
 		#Save stopstate to disk for later recovery

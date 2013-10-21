@@ -2,6 +2,8 @@ MakeWaste <-
 function (data = "find", directory = "test", save = FALSE, type = "png", 
     basedir = "~/Work/R/GAMA/Tiling") 
 {
+  data(PriConvMat,package='Tiler')
+  
     if (is.character(data)) {
         if (data == "find") {
             load(paste(basedir, "/", directory, "/stopstate.r", 
@@ -9,15 +11,7 @@ function (data = "find", directory = "test", save = FALSE, type = "png",
             data = stopstate
         }
     }
-    if (data$tilelim[1, 3] < 160) {
-        loc = "GAMA 09"
-    }
-    if (data$tilelim[1, 3] > 160 & data$tilelim[1, 3] < 200) {
-        loc = "GAMA 12"
-    }
-    if (data$tilelim[1, 3] > 200) {
-        loc = "GAMA 15"
-    }
+
     if (save) {
         if (type == "png") {
             png(paste(basedir, "/", directory, "/Waste", 1, "-", 
@@ -54,8 +48,7 @@ function (data = "find", directory = "test", save = FALSE, type = "png",
     plot(cbind(data$tilelim[, 1], fibtot), type = "l", xlab = "Tile No.", 
         ylab = "Fibres", xlim = c(min(data$tilelim[, 1]), max(c(min(data$tilelim[, 
             1]) + 20, max(data$tilelim[, 1])))), ylim = c(0, 
-            400), col = "purple", main = paste("Fibre Priorities for ", 
-            loc, " 1-", max(data$assign[, 2]), " Tiles", sep = ""))
+            400), col = "purple", main = paste("Fibre Priorities for",min(data$assign[, 2]),"-", max(data$assign[, 2]), " Tiles", sep = ""))
     legendtext = c("Fibs", "Non-Broken", "Total Fibres")
     for (i in 1:length(which(PriConvMat[, "WastePlot"] == TRUE))) {
         lines(as.matrix(as.data.frame(table(data$assign[data$assign[, 

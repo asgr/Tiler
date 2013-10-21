@@ -6,6 +6,7 @@ function (TileCat = TileV4c, tilecens, filebase = "test", RAran = cbind(sqrt(3)/
     configdir = "/Applications/Work/configure-7.9.Darwin/", manual = FALSE, 
     date = "auto", medshift = TRUE) 
 {
+    data(PriConvMat,package='Tiler')
     if (useIDs[1] == "all") {
         tempTilecat = TileCat[, c("RA", "DEC", "CATA_INDEX", 
             "PRIORITY_CLASS", "R_PETRO")]

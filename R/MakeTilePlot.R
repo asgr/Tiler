@@ -3,7 +3,7 @@ function (data = "find", directory = "test", TileCat = TileV4f,
     sub = "all", save = FALSE, type = "png", left = TRUE, skirt = 0.4, 
     basedir = "~/Work/R/GAMA/Tiling", position = "g09") 
 {
-    library(plotrix)
+    data(PriConvMat,package='Tiler')
     if (is.character(data)) {
         if (data == "find") {
             load(paste(basedir, "/", directory, "/stopstate.r", 

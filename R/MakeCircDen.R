@@ -12,10 +12,10 @@ DECreg={}
 
 info=read.table(paste(basedir,'/SurveyInfo.txt',sep=''),header=T)
 
-RAadd=min(TileCat[TileCat[,'CLUSTER_NAME']%in%position,'RA'])
-Decadd=min(TileCat[TileCat[,'CLUSTER_NAME']%in%position,'DEC'])
-raran=max(TileCat[TileCat[,'CLUSTER_NAME']%in%position,'RA'])-min(TileCat[TileCat[,'CLUSTER_NAME']%in%position,'RA'])
-decran=max(TileCat[TileCat[,'CLUSTER_NAME']%in%position,'DEC'])-min(TileCat[TileCat[,'CLUSTER_NAME']%in%position,'DEC'])
+RAadd=min(TileCat[TileCat[,'POSITION']%in%position,'RA'])
+Decadd=min(TileCat[TileCat[,'POSITION']%in%position,'DEC'])
+raran=max(TileCat[TileCat[,'POSITION']%in%position,'RA'])-min(TileCat[TileCat[,'POSITION']%in%position,'RA'])
+decran=max(TileCat[TileCat[,'POSITION']%in%position,'DEC'])-min(TileCat[TileCat[,'POSITION']%in%position,'DEC'])
 loc=position
 skirt=info[1,'Skirt']
 year=info[1,'Year']
@@ -37,9 +37,9 @@ if(save & plot){
 	if(type=='pdf'){pdf(paste(basedir,'/',directory,'/DenMap',assignlim,'.pdf',sep=''),width=800/72,height=480/72,onefile=TRUE)}
 	}
 
-tempAll=TileCat[TileCat[,'R_PETRO']>lorpet & TileCat[,'R_PETRO']<hirpet & TileCat[,'SURVEY_CLASS']>=survey & TileCat[,'CLUSTER_NAME']%in%position,c('RA','DEC')]
+tempAll=TileCat[TileCat[,'R_PETRO']>lorpet & TileCat[,'R_PETRO']<hirpet & TileCat[,'SURVEY_CLASS']>=survey & TileCat[,'POSITION']%in%position,c('RA','DEC')]
 
-tempObs=TileCat[TileCat[,'R_PETRO']>lorpet & TileCat[,'R_PETRO']<hirpet & TileCat[,'CLUSTER_NAME']%in%position & ((TileCat[,'CATA_INDEX'] %in% data$assign[data$assign[,2]>0 & data$assign[,2]<=assignlim,1] & TileCat[,'PRIORITY_CLASS']>=denpri) | (TileCat[,'SURVEY_CLASS']>=survey & TileCat[,'PRIORITY_CLASS']<denpri)),c('RA','DEC')]
+tempObs=TileCat[TileCat[,'R_PETRO']>lorpet & TileCat[,'R_PETRO']<hirpet & TileCat[,'POSITION']%in%position & ((TileCat[,'CATA_INDEX'] %in% data$assign[data$assign[,2]>0 & data$assign[,2]<=assignlim,1] & TileCat[,'PRIORITY_CLASS']>=denpri) | (TileCat[,'SURVEY_CLASS']>=survey & TileCat[,'PRIORITY_CLASS']<denpri)),c('RA','DEC')]
 
 RAreg=c(RAadd,RAadd+raran)
 DECreg=c(Decadd,Decadd+decran)
