@@ -1,16 +1,26 @@
 #! /usr/bin/Rscript --vanilla
-setwd('/Users/aaron/SAMI/cluster_tiling/samiY1SBRUN1')
-load('samiTiler-1.0beta.img')
 
-TCsamiclusY1=read.table('AAOmega_cluster_targets_Sep10.txt',header=T) 	#Can give this a different LHS name if it is passed to the function
-GAMAguide=read.table('AAOmega_guides_Sep10.txt',header=T)			#Must be called GAMAguide
-GAMAstspec=read.table('AAOmega_fstars_Sep10.txt',header=T)			#Must be called GAMAstspec
-GAMAsky=read.table('AAOmega_skies_Sep10.txt',header=T)				#Must be called GAMAsky
+#This is an example survey rebuilding script, it will obviously need editing for each user / survey. The idea is this is run after a bunch of fields have been observed, and lets us update the state of the survey.
 
-rebuildState(TileCat=TCsamiclusY1,position='A119',basedir='.', configdir='/Applications/Work/configure-7.10.Darwin')
-rebuildState(TileCat=TCsamiclusY1,position='A168',basedir='.', configdir='/Applications/Work/configure-7.10.Darwin')
-rebuildState(TileCat=TCsamiclusY1,position='A2399',basedir='.', configdir='/Applications/Work/configure-7.10.Darwin')
-rebuildState(TileCat=TCsamiclusY1,position='A3880',basedir='.', configdir='/Applications/Work/configure-7.10.Darwin')
-rebuildState(TileCat=TCsamiclusY1,position=c('a4038','APMCC0917'),basedir='.', configdir='/Applications/Work/configure-7.10.Darwin')
-rebuildState(TileCat=TCsamiclusY1,position='A85',basedir='.', configdir='/Applications/Work/configure-7.10.Darwin')
-rebuildState(TileCat=TCsamiclusY1,position='EDCC0442',basedir='.', configdir='/Applications/Work/configure-7.10.Darwin')
+setwd('/Users/aaron/GAMA2/TileDataDec2013/') #set the directory to where you want to do the tiling
+library(Tiler) #If you have everything installed correctly, this should load fine.
+
+cat("Reading tiling catalogue\n")
+TC32=read.table('DATAtile.tab',header=T)            #Can give this a different LHS name if it is passed to the function
+TC32[,'POSITION']='G12'
+TC32[TC32[,'RA']<150,'POSITION']='G09'
+TC32[TC32[,'RA']<50,'POSITION']='G02'
+TC32[TC32[,'RA']>200,'POSITION']='G15'
+TC32[TC32[,'RA']>300,'POSITION']='G23'
+cat("Reading guide catalogue\n")
+DATAguide=read.table('DATAguide.tab',header=T)  		#Must be called DATAguide
+cat("Reading spectral standards catalogue\n")
+DATAstspec=read.table('DATAstspec.tab',header=T)		#Must be called DATAstspec
+cat("Reading sky catalogue\n")
+DATAsky=read.table('DATAsky.tab',header=T)				  #Must be called DATAsky
+
+rebuildState(TileCat=TC32,position='G02',basedir='.', configdir='/Applications/Work/configure-8.0.Darwin')
+rebuildState(TileCat=TC32,position='G09',basedir='.', configdir='/Applications/Work/configure-8.0.Darwin')
+rebuildState(TileCat=TC32,position='G12',basedir='.', configdir='/Applications/Work/configure-8.0.Darwin')
+rebuildState(TileCat=TC32,position='G15',basedir='.', configdir='/Applications/Work/configure-8.0.Darwin')
+rebuildState(TileCat=TC32,position='G23',basedir='.', configdir='/Applications/Work/configure-8.0.Darwin')

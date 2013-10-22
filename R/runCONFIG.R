@@ -3,6 +3,24 @@ function(long,lat,id,prior,mags,IPorig,file='test',label='2dF test field',alocat
 tempsph=cbind(long=long,lat=lat)
 N=length(long)
 
+info=read.table(paste(basedir,'/SurveyInfo.txt',sep=''),header=T)
+
+RAadd=min(TileCat[TileCat[,'POSITION']%in%position,'RA'])
+Decadd=min(TileCat[TileCat[,'POSITION']%in%position,'DEC'])
+raran=max(TileCat[TileCat[,'POSITION']%in%position,'RA'])-min(TileCat[TileCat[,'POSITION']%in%position,'RA'])
+decran=max(TileCat[TileCat[,'POSITION']%in%position,'DEC'])-min(TileCat[TileCat[,'POSITION']%in%position,'DEC'])
+loc=position
+skirt=info[1,'Skirt']
+survyear=info[1,'Year']
+semester=info[1,'Sem']
+run=info[1,'Run']
+denpri=info[1,'Denpri']
+minpri=info[1,'LoPclass']
+survey=info[1,'MainSclass']
+byden=info[1,'ByDen']
+magbin=5
+lolim=22
+
 dms=deg2dms(tempsph[,'lat'])
 hms=deg2hms(tempsph[,'long'])
 
@@ -38,7 +56,7 @@ idtemp=id
 nametargets=id
 for(i in 1:length(id)){
 	id[i]=paste('G',formatC(idtemp[i],width=6,format='f',flag=0,digits=0),sep='')
-nametargets[i]=paste(id[i],'_IP',IPorig[i],'_Y2_',formatC(long[i],width=7,digits=2,flag=0,format='f'),'_',formatC(lat[i],width=5,digits=2,flag=0,format='f'),sep='')
+nametargets[i]=paste(id[i],'_IP',IPorig[i],'_Y',survyear,'_',formatC(long[i],width=7,digits=2,flag=0,format='f'),'_',formatC(lat[i],width=5,digits=2,flag=0,format='f'),sep='')
 	}
 rm(idtemp)
 

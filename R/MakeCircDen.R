@@ -2,6 +2,7 @@ MakeCircDen <-
 function(data='find',directory='test',TileCat=TileV4f,lorpet=14,hirpet=22,bw=sqrt(2)/10,res=0.05,assignlim=0,plot=TRUE, save=FALSE,type='png',denpri=8,basedir='~/Work/R/GAMA/Tiling',position='g02'){
 #WARNING, bw here means the diameter of the circle used for convolusion, this is to stay consistent with the definition in other packages
 if(any(colnames(TileCat)=='CATAID')){colnames(TileCat)[colnames(TileCat)=='CATAID']='CATA_INDEX'}
+options(stringsAsFactors=FALSE)
 options(scipen=999)
 if(is.character(data)){if(data=='find'){
 	load(paste(basedir,'/',directory,'/stopstate.r',sep=''))
@@ -16,17 +17,18 @@ RAadd=min(TileCat[TileCat[,'POSITION']%in%position,'RA'])
 Decadd=min(TileCat[TileCat[,'POSITION']%in%position,'DEC'])
 raran=max(TileCat[TileCat[,'POSITION']%in%position,'RA'])-min(TileCat[TileCat[,'POSITION']%in%position,'RA'])
 decran=max(TileCat[TileCat[,'POSITION']%in%position,'DEC'])-min(TileCat[TileCat[,'POSITION']%in%position,'DEC'])
-loc=position
-skirt=info[1,'Skirt']
-year=info[1,'Year']
-semester=info[1,'Sem']
-run=info[1,'Run']
-denpri=info[1,'Denpri']
-minpri=info[1,'LoPclass']
-survey=info[1,'MainSclass']
-byden=info[1,'ByDen']
+loc=info[info[,'Region']== position,'Loc']
+skirt=info[info[,'Region']== position,'Skirt']
+year=info[info[,'Region']== position,'Year']
+semester=info[info[,'Region']== position,'Sem']
+run=info[info[,'Region']== position,'Run']
+denpri=info[info[,'Region']== position,'Denpri']
+minpri=info[info[,'Region']== position,'LoPclass']
+survey=info[info[,'Region']== position,'MainSclass']
+byden=info[info[,'Region']== position,'ByDen']
 magbin=5
 lolim=22
+
 
 
 if(save & plot){

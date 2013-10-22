@@ -1,5 +1,31 @@
 #! /usr/bin/Rscript --vanilla
 
+cat("Please give the path to your tiling folder (i.e. where you want the tiling output to go\t")
+path=readLines(con = 'stdin',n=1)
+setwd(path)
+
 cat("Please enter date stamp for the last completed night in the form: YYMMDD i.e. 090228\t")
-date=readLines(file("stdin"),1)
-print(date)
+date=readLines(con = 'stdin',n=1)
+
+cat("Do you want to generate new fields? y/n\t")
+dosurvey=readLines(con = 'stdin',n=1)
+
+cat("Enter the path to the tiling catalogue\t")
+tilepath=readLines(con = 'stdin',n=1)
+cat("Loading tiling data...\n")
+TileCat=read.table(tilepath,header=T)
+
+cat("Enter the path to the guide star catalogue\t")
+guidepath=readLines(con = 'stdin',n=1)
+cat("Loading guide star data...\n")
+DATAguide=read.table(tilepath,header=T)			#Must be called DATAguide
+
+cat("Enter the path to the spectral standards catalogue\t")
+stspecpath=readLines(con = 'stdin',n=1)
+cat("Loading spectral standards data...\n")
+DATAstspec=read.table(stspecpath,header=T)  		#Must be called DATAguide
+
+cat("Enter the path to the sky catalogue\t")
+skypath=readLines(con = 'stdin',n=1)
+cat("Loading sky data...\n")
+DATAsky=read.table(skypath,header=T)

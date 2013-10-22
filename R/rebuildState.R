@@ -2,7 +2,7 @@ rebuildState <-
 function(directory='default', TileCat=TileV4f, inputfile=FALSE, position='g09', plate=0, denpri=8, minpri=1, bw=sqrt(2)/10, date='auto', report=FALSE, pdfopen=FALSE, movie=FALSE, updatefib=FALSE, byden=TRUE, basedir='~/Work/R/GAMA/Tiling/', configdir='/Applications/Work/configure-7.9.Darwin', convertdir='/sw/bin', latexdir='/usr/texbin', dvipsdir='/sw/bin',survey=1){
 if(any(colnames(TileCat)=='CATAID')){colnames(TileCat)[colnames(TileCat)=='CATAID']='CATA_INDEX'}
 options(scipen=999)
-
+options(stringsAsFactors=FALSE)
 continue=FALSE
 tileplus='???'
 start='???'
@@ -106,7 +106,13 @@ if(byden){
 tempTilePos=TileCat[TileCat[,'SURVEY_CLASS']>=survey & TileCat[,'POSITION']%in%position,c('RA','DEC')]
 tartestPos={}
 
-sparsedists=fields.rdist.near(sph2car(as.matrix(testgrid*pi/180)),sph2car(as.matrix(tempTilePos*pi/180)),mean.neighbor=ceiling(length(tempTilePos[,1])/((raran*decran)/pi)),delta=pi/180)
+sparsedists=try(fields.rdist.near(sph2car(as.matrix(testgrid),deg=T),sph2car(as.matrix(tempTilePos[,1:2]),deg=T),mean.neighbor=max(ceiling(c(100,length(tempTilePos[,1])/((raran*decran)/pi)))),delta=pi/180))
+if(class(sparsedists)=='try-error'){
+  sparsedists=try(fields.rdist.near(sph2car(as.matrix(testgrid),deg=T),sph2car(as.matrix(tempTilePos[,1:2]),deg=T),mean.neighbor=2*max(ceiling(c(100,length(tempTilePos[,1])/((raran*decran)/pi)))),delta=pi/180))
+}
+if(class(sparsedists)=='try-error'){
+  sparsedists=try(fields.rdist.near(sph2car(as.matrix(testgrid),deg=T),sph2car(as.matrix(tempTilePos[,1:2]),deg=T),mean.neighbor=4*max(ceiling(c(100,length(tempTilePos[,1])/((raran*decran)/pi)))),delta=pi/180))
+}
 	
 tartestPos=rep(0,length(testgrid[,1]))
 sparsedists=table(sparsedists$ind[,1])
@@ -116,7 +122,13 @@ tartestPos[as.numeric(names(sparsedists))]=as.numeric(sparsedists)
 
 dir.create(paste(basedir,directory,sep=''),showWarnings=FALSE,recursive=TRUE)
 
-stopstate=list(assign=AssignOrder,maglim=MagLims,tilelim=tilelim,current=current,loc=loc,args=arguments,fibstats=fibstats)
+#Update internal fibre tiles
+if(updatefib){
+  updateExtFibs(configdir=configdir)
+  updateIntFibs(configdir=configdir,basedir=basedir)
+}
+
+stopstate=list(assign=AssignOrder,maglim=MagLims,tilelim=tilelim,current=installed.packages()['Tiler','Version'],loc=loc,args=arguments,fibstats=fibstats)
 try(save(stopstate,file=paste(basedir,directory,'stopstate.r',sep='')))
 
 #First frames for tiling annimations generated here, but only when continue==FALSE, i.e. the first time a new tiling strategy is run
@@ -207,12 +219,12 @@ check80g5=length(which(as.numeric(tempden $z[tempden $allz>=5])<=0.2))/length(as
 
 tilelim=rbind(tilelim,data.frame(No.=runs, Comp=completeness, RA=as.numeric(tileloc)[1], Dec=as.numeric(tileloc)[2], Left=length(TileCat[TileCat[,'PRIORITY_CLASS']>=denpri & TileCat[,'POSITION']%in%position & TileCat[,'CATA_INDEX'] %in% TileSub,1]), AngComp=check80,AngComp5=check80g5,Plate=plate,Den=byden,Date=date(), Int=interact, Man=manual))
 
-stopstate=list(assign=AssignOrder,maglim=MagLims,tilelim=tilelim,current=current,loc=loc,args=arguments,catname=catname,fibstats=fibstats)
+stopstate=list(assign=AssignOrder,maglim=MagLims,tilelim=tilelim,current=installed.packages()['Tiler','Version'],loc=loc,args=arguments,catname=catname,fibstats=fibstats)
 try(save(stopstate,file=paste(basedir,directory,'stopstate.r',sep='')))
 
 }
 
-stopstate=list(assign=AssignOrder,maglim=MagLims,tilelim=tilelim,current=current,loc=loc,args=arguments,catname=catname,fibstats=fibstats)
+stopstate=list(assign=AssignOrder,maglim=MagLims,tilelim=tilelim,current=installed.packages()['Tiler','Version'],loc=loc,args=arguments,catname=catname,fibstats=fibstats)
 try(save(stopstate,file=paste(basedir,directory,'stopstate.r',sep='')))
 
 if(report){try(report(directory=directory,TileCat=TileCat,basedir=basedir,latex=TRUE,latexdir=latexdir,dvipsdir=dvipsdir,pdfopen=pdfopen))}

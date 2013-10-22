@@ -3,8 +3,8 @@ function (directory = "test", TileCat = TileV4f, basedir = "~/Work/R/GAMA/Tiling
     latex = FALSE, latexdir = "/usr/texbin", pdfopen = FALSE, 
     dvipsdir = "/sw/bin", position = "g09") 
 {
-    library(xtable, lib = c("/home/aatlxa/gama/R/x86_64-redhat-linux-gnu-library/2.9/", 
-        .libPaths()))
+    options(stringsAsFactors=FALSE)
+    data(SweaveFile,package='Tiler')
     reset = FALSE
     if (exists("stopstate")) {
         temp = stopstate

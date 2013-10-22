@@ -5,11 +5,20 @@ dir.create(paste(basedir,'/Broken', sep=''),showWarnings=FALSE,recursive=TRUE)
 
 data(brokengrid,package='Tiler')
 
+exists('DATAguide'){
+temp=DATAguide
+}
+DATAguide=brokengrid
+
 runCONFIG(brokengrid[,1],brokengrid[,2],1:800,rep(1,800),rep(20,800),directory='Broken/',file='Fib',guides=TRUE,sky=FALSE,stanspec=FALSE,plate=plate,configdir=configdir,IPorig=rep(1,800),basedir=basedir)
 templist=readLines(paste(basedir,'/Broken/FibP',plate,'.lis',sep=''))
 startFibs=grep('\\*Fibre',templist)
 tarIDs=grep('\\*.*G.*G.*',templist)-startFibs
 guideIDs=grep('\\*.*guide',templist)-startFibs
+
+exists('DATAguide'){
+  DATAguide=temp
+}
 
 return=list(workingMain=tarIDs,workingGuide=guideIDs,brokenMain=(1:400)[-c(tarIDs,seq(50,400,by=50))],brokenGuide=seq(50,400,by=50)[! seq(50,400,by=50) %in% guideIDs])
 }

@@ -3,21 +3,23 @@ function(tileplus=5, position='A3880', directory='default', plate=0, runfolder=F
 if(any(colnames(TileCat)=='CATAID')){colnames(TileCat)[colnames(TileCat)=='CATAID']='CATA_INDEX'}
 options(scipen=999)
 
+options(stringsAsFactors=FALSE)
+
 info=read.table(paste(basedir,'/SurveyInfo.txt',sep=''),header=T)
 
 RAadd=min(TileCat[TileCat[,'POSITION']%in%position,'RA'])
 Decadd=min(TileCat[TileCat[,'POSITION']%in%position,'DEC'])
 raran=max(TileCat[TileCat[,'POSITION']%in%position,'RA'])-min(TileCat[TileCat[,'POSITION']%in%position,'RA'])
 decran=max(TileCat[TileCat[,'POSITION']%in%position,'DEC'])-min(TileCat[TileCat[,'POSITION']%in%position,'DEC'])
-loc=position
-skirt=info[1,'Skirt']
-year=info[1,'Year']
-semester=info[1,'Sem']
-run=info[1,'Run']
-denpri=info[1,'Denpri']
-minpri=info[1,'LoPclass']
-survey=info[1,'MainSclass']
-byden=info[1,'ByDen']
+loc=info[info[,'Region']== position,'Loc']
+skirt=info[info[,'Region']== position,'Skirt']
+year=info[info[,'Region']== position,'Year']
+semester=info[info[,'Region']== position,'Sem']
+run=info[info[,'Region']== position,'Run']
+denpri=info[info[,'Region']== position,'Denpri']
+minpri=info[info[,'Region']== position,'LoPclass']
+survey=info[info[,'Region']== position,'MainSclass']
+byden=info[info[,'Region']== position,'ByDen']
 magbin=5
 lolim=22
 

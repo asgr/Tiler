@@ -19,7 +19,8 @@ ROWID RA DEC PSFMAG_R
 999091700111     355.5883789000000093     -29.1087893999999991     14.0694313
 999091700138     355.3394470000000069     -29.4658717999999986     14.0480652
 999091700249     355.1301879999999755     -29.4512806000000005     14.4285583
- skies:
+
+skies:
 
 RA DEC
 355.7595942504526079     -29.2249855203739273
@@ -35,26 +36,38 @@ ROWID RA DEC  PSFMAG_R PRIORITY_FLAG
 999091700022     355.4739989999999921     -29.2830486000000008     15.6917324      7
 999091700082     355.5869141000000013     -29.1524104999999984     16.0948925      7
 
-cd to the directory with the R tiling code in then start R
+Once catalogues are in place you can start tiling. You might need to actually get R on your machine- google 'R project' and you'll find it easily enough. Once you have installed R and got the latest version of the Tiling software, you now need to get all the packages installed.
 
-load the current Tiling software:
+cd to where the Tiler_?.?tar.gz is, and install the tiling software on the terminal with:
 
-> load('samiTiler-1.?.img')
+> R CMD install Tiler_?.?.tar.gz, where the ?.? should be replaced with the version number (e.g. 1.1)
+
+start R with:
+
+> R
+
+You are now inside R. You also need to install: sphereplot, rgl, celestial, plotrix, fields. For each one you run:
+
+> install.packages('sphereplot',type='source')
+> install.packages('rgl',type='source')
+> install.packages('celestial',type='source')
+> install.packages('plotrix',type='source')
+> install.packages('fields',type='source')
 
 To update the catalogues within R type (something like, it obviously depends on the actual names!):
 
-> TCsamiclusY1=read.table('AAOmega_cluster_targets_Sep10.txt',header=T) 	#Can give this a different LHS name if it is passed to the function
-> GAMAguide=read.table('AAOmega_guides_Sep10.txt',header=T)			#Must be called GAMAguide
-> GAMAstspec=read.table('AAOmega_fstars_Sep10.txt',header=T)			#Must be called GAMAstspec
-> GAMAsky=read.table('AAOmega_skies_Sep10.txt',header=T)					#Must be called GAMAsky
+TCsamiclusY1=read.table('AAOmega_cluster_targets_Sep10.txt',header=T)   #Can give this a different LHS name if it is passed to the function
+DATAguide=read.table('AAOmega_guides_Sep10.txt',header=T)			#Must be called DATAguide
+DATAstspec=read.table('AAOmega_fstars_Sep10.txt',header=T)		#Must be called DATAstspec
+DATAsky=read.table('AAOmega_skies_Sep10.txt',header=T)				#Must be called DATAsky
 
 You can save this with
 
 > save.image('samiTiler-1.?.img')
 
-The above read in commands are in the RUNMEtile.rscript and RUNMErebuild.rscript scripts.
+The above read in commands are in the RUNMEtile.rscript and RUNMErebuild.rscript scripts inside the Tiler_?.?.tar.gz tarball.
 
-To run the tiling code for an individual cluster (rather than the RUNMEtile.rscript script) use:
+To run the tiling code for e.g. an individual cluster (rather than the RUNMEtile.rscript script) use:
 
 > Tiler(tileplus=5, position='A3880', plate=c(0,1,0,1,0), runfolder=TRUE, TileCat=TCsamiclusY1, runoffset=1, updatefib=T, basedir='.', configdir='/instsoft/2dF/misc_software/configure-7.10+.Linux')
 
@@ -68,38 +81,36 @@ updatefib	Should the fibres be updated internally (usually best to keep this set
 basedir		Base directory to use for the folder structure, default is '.', i.e. where you are currently
 confider	Path to the 'configure' code. Example here is setup for the AATLXA machine (which has R and configure installed).
 
-To run multiple cluster use:
+To run multiple positions at once (useful if target clusters overlap etc) use:
 
 > Tiler(tileplus=5, position=c('a4038','APMCC0917'), plate=c(0,1,0,1,0), runfolder=TRUE, TileCat=TCsamiclusY1, runoffset=1, updatefib=T, basedir='.', configdir='/instsoft/2dF/misc_software/configure-7.10+.Linux')
-
-You can combine other cluster together, that probably wouldn't be sensible.
 
 During the run, if you want to feedback observed objects, just remake the objects ascii table and load it back in. You can give it a different name, but then the 'TileCat' argument will need updating in the Tiler code.
 
 So to make a whole run this is probably what you want to run:
 
-> Tiler(tileplus=5, position='A119', plate=c(0,1,0,1,0), runfolder=TRUE, TileCat=TCsamiclusY1, runoffset=1, updatefib=T, basedir='.', configdir='/instsoft/2dF/misc_software/configure-7.10+.Linux')
-> Tiler(tileplus=5, position='A168', plate=c(0,1,0,1,0), runfolder=TRUE, TileCat=TCsamiclusY1, runoffset=1, updatefib=F, basedir='.', configdir='/instsoft/2dF/misc_software/configure-7.10+.Linux')
-> Tiler(tileplus=5, position='A2399', plate=c(0,1,0,1,0), runfolder=TRUE, TileCat=TCsamiclusY1, runoffset=1, updatefib=F, basedir='.', configdir='/instsoft/2dF/misc_software/configure-7.10+.Linux')
-> Tiler(tileplus=5, position='A3880', plate=c(0,1,0,1,0), runfolder=TRUE, TileCat=TCsamiclusY1, runoffset=1, updatefib=F, basedir='.', configdir='/instsoft/2dF/misc_software/configure-7.10+.Linux')
-> Tiler(tileplus=5, position=c('a4038','APMCC0917'), plate=c(0,1,0,1,0), runfolder=TRUE, TileCat=TCsamiclusY1, runoffset=1, updatefib=F, basedir='.', configdir='/instsoft/2dF/misc_software/configure-7.10+.Linux')
-> Tiler(tileplus=5, position='A85', plate=c(0,1,0,1,0), runfolder=TRUE, TileCat=TCsamiclusY1, runoffset=1, updatefib=T, basedir='.', configdir='/instsoft/2dF/misc_software/configure-7.10+.Linux')
-> Tiler(tileplus=5, position='EDCC0442', plate=c(0,1,0,1,0), runfolder=TRUE, TileCat=TCsamiclusY1, runoffset=1, updatefib=T, basedir='.', configdir='/instsoft/2dF/misc_software/configure-7.10+.Linux')
+> Tiler(tileplus=5, position='A119', plate=c(0,1,0,1,0), runfolder=TRUE, TileCat=TCsamiclusY1, runoffset=1, updatefib=T, basedir='.', configdir='/Applications/Work/configure-8.0.Darwin')
+> Tiler(tileplus=5, position='A168', plate=c(0,1,0,1,0), runfolder=TRUE, TileCat=TCsamiclusY1, runoffset=1, updatefib=F, basedir='.', configdir='/Applications/Work/configure-8.0.Darwin')
+> Tiler(tileplus=5, position='A2399', plate=c(0,1,0,1,0), runfolder=TRUE, TileCat=TCsamiclusY1, runoffset=1, updatefib=F, basedir='.', configdir='/Applications/Work/configure-8.0.Darwin')
+> Tiler(tileplus=5, position='A3880', plate=c(0,1,0,1,0), runfolder=TRUE, TileCat=TCsamiclusY1, runoffset=1, updatefib=F, basedir='.', configdir='/Applications/Work/configure-8.0.Darwin')
+> Tiler(tileplus=5, position=c('a4038','APMCC0917'), plate=c(0,1,0,1,0), runfolder=TRUE, TileCat=TCsamiclusY1, runoffset=1, updatefib=F, basedir='.', configdir='/Applications/Work/configure-8.0.Darwin')
+> Tiler(tileplus=5, position='A85', plate=c(0,1,0,1,0), runfolder=TRUE, TileCat=TCsamiclusY1, runoffset=1, updatefib=T, basedir='.', configdir='/Applications/Work/configure-8.0.Darwin')
+> Tiler(tileplus=5, position='EDCC0442', plate=c(0,1,0,1,0), runfolder=TRUE, TileCat=TCsamiclusY1, runoffset=1, updatefib=T, basedir='.', configdir='/Applications/Work/configure-8.0.Darwin')
 
-I've made a file called RUNMEtile.rscript which you can run as an executable
+I've made a file called RUNMEtile.rscript which you can run as an executable, it is inside the Tiler_?.?.tar.gz tarball.
 
 To update the survey you copy the observed .lis files into the 'Observed' directory for the appropriate cluster, then you can run:
 
-> rebuildState(TileCat=TCsamiclusY1,position='A119',basedir='.', configdir='/Applications/Work/configure-7.10.Darwin')
-> rebuildState(TileCat=TCsamiclusY1,position='A168',basedir='.', configdir='/Applications/Work/configure-7.10.Darwin')
-> rebuildState(TileCat=TCsamiclusY1,position='A2399',basedir='.', configdir='/Applications/Work/configure-7.10.Darwin')
-> rebuildState(TileCat=TCsamiclusY1,position='A3880',basedir='.', configdir='/Applications/Work/configure-7.10.Darwin')
-> rebuildState(TileCat=TCsamiclusY1,position=c('a4038','APMCC0917'),basedir='.', configdir='/Applications/Work/configure-7.10.Darwin')
-> rebuildState(TileCat=TCsamiclusY1,position='A85',basedir='.', configdir='/Applications/Work/configure-7.10.Darwin')
-> rebuildState(TileCat=TCsamiclusY1,position='EDCC0442',basedir='.', configdir='/Applications/Work/configure-7.10.Darwin')
+> rebuildState(TileCat=TCsamiclusY1,position='A119',basedir='.', configdir='/Applications/Work/configure-8.0.Darwin')
+> rebuildState(TileCat=TCsamiclusY1,position='A168',basedir='.', configdir='/Applications/Work/configure-8.0.Darwin')
+> rebuildState(TileCat=TCsamiclusY1,position='A2399',basedir='.', configdir='/Applications/Work/configure-8.0.Darwin')
+> rebuildState(TileCat=TCsamiclusY1,position='A3880',basedir='.', configdir='/Applications/Work/configure-8.0.Darwin')
+> rebuildState(TileCat=TCsamiclusY1,position=c('a4038','APMCC0917'),basedir='.', configdir='/Applications/Work/configure-8.0.Darwin')
+> rebuildState(TileCat=TCsamiclusY1,position='A85',basedir='.', configdir='/Applications/Work/configure-8.0.Darwin')
+> rebuildState(TileCat=TCsamiclusY1,position='EDCC0442',basedir='.', configdir='/Applications/Work/configure-8.0.Darwin')
 
-These commands are in RUNMErebuild.rscript
+These commands are in RUNMErebuild.rscript which you can run as an executable, it is inside the Tiler_?.?.tar.gz tarball.
 
-Once all of the cluster regions have been rebuilt you can re-run RUNMEtile.rscript (or the individual commands above).
+Once all of the cluster regions have been rebuilt you can re-run RUNMEtile.rscript (or the individual commands above). This works because the updated state of the survey is stored in a file called 'stopstate.r' that you'll find in the 'Observed' folder.
 
 That should be enough to get you going, email me at aaron.robotham@uwa.edu.au if you're stuck.

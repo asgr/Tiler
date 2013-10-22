@@ -51,13 +51,14 @@ function (data = "find", directory = "test", save = FALSE, type = "png",
             400), col = "purple", main = paste("Fibre Priorities for",min(data$assign[, 2]),"-", max(data$assign[, 2]), " Tiles", sep = ""))
     legendtext = c("Fibs", "Non-Broken", "Total Fibres")
     for (i in 1:length(which(PriConvMat[, "WastePlot"] == TRUE))) {
-        lines(as.matrix(as.data.frame(table(data$assign[data$assign[, 
-            3] == PriConvMat[PriConvMat[, "WastePlot"] == TRUE, 
-            1][i] & data$assign[, 2] > 0, 2]))), lty = PriConvMat[PriConvMat[, 
+      select=data$assign[,3] == PriConvMat[PriConvMat[, "WastePlot"] == TRUE,1][i] & data$assign[, 2] > 0
+      if(length(which(select))>0){
+        lines(as.matrix(as.data.frame(table(data$assign[select, 2]))), lty = PriConvMat[PriConvMat[, 
             "WastePlot"] == TRUE, "Lty"][i], col = PriConvMat[PriConvMat[, 
             "WastePlot"] == TRUE, "Colour"][i])
         legendtext = c(legendtext, paste("Priority", PriConvMat[PriConvMat[, 
             "WastePlot"] == TRUE, 1][i]))
+      }
     }
     lines(cbind(data$tilelim[, 1], fibmax), col = "grey", lty = 2)
     lines(cbind(data$tilelim[, 1], fibmaxpos), col = "red", lty = 3)
