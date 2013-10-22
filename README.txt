@@ -53,6 +53,7 @@ You are now inside R. You also need to install: sphereplot, rgl, celestial, plot
 > install.packages('celestial',type='source')
 > install.packages('plotrix',type='source')
 > install.packages('fields',type='source')
+> install.packages('xtable',type='source')
 
 To update the catalogues within R type (something like, it obviously depends on the actual names!):
 
