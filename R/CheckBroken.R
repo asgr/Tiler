@@ -4,11 +4,12 @@ function(plate=0,basedir='~/Work/R/GAMA/Tiling/',configdir="/Applications/Work/c
 dir.create(paste(basedir,'/Broken', sep=''),showWarnings=FALSE,recursive=TRUE)
 
 data(brokengrid,package='Tiler')
+data(brokenguide,package='Tiler')
 
-exists('DATAguide'){
-temp=DATAguide
+if(exists('DATAguide')){
+  tempguide=DATAguide
 }
-DATAguide=brokengrid
+assign('DATAguide',brokenguide,envir=.GlobalEnv)
 
 runCONFIG(brokengrid[,1],brokengrid[,2],1:800,rep(1,800),rep(20,800),directory='Broken/',file='Fib',guides=TRUE,sky=FALSE,stanspec=FALSE,plate=plate,configdir=configdir,IPorig=rep(1,800),basedir=basedir)
 templist=readLines(paste(basedir,'/Broken/FibP',plate,'.lis',sep=''))
@@ -16,9 +17,10 @@ startFibs=grep('\\*Fibre',templist)
 tarIDs=grep('\\*.*G.*G.*',templist)-startFibs
 guideIDs=grep('\\*.*guide',templist)-startFibs
 
-exists('DATAguide'){
-  DATAguide=temp
-}
+if(exists('tempguide')){
+  assign('DATAguide',tempguide,envir=.GlobalEnv)
+  rm(tempguide,envir=.GlobalEnv)
+}else{rm(DATAguide,envir=.GlobalEnv)}
 
 return=list(workingMain=tarIDs,workingGuide=guideIDs,brokenMain=(1:400)[-c(tarIDs,seq(50,400,by=50))],brokenGuide=seq(50,400,by=50)[! seq(50,400,by=50) %in% guideIDs])
 }
