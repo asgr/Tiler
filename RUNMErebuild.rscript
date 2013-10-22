@@ -1,0 +1,16 @@
+#! /usr/bin/Rscript --vanilla
+setwd('/Users/aaron/SAMI/cluster_tiling/samiY1SBRUN1')
+load('samiTiler-1.0beta.img')
+
+TCsamiclusY1=read.table('AAOmega_cluster_targets_Sep10.txt',header=T) 	#Can give this a different LHS name if it is passed to the function
+GAMAguide=read.table('AAOmega_guides_Sep10.txt',header=T)			#Must be called GAMAguide
+GAMAstspec=read.table('AAOmega_fstars_Sep10.txt',header=T)			#Must be called GAMAstspec
+GAMAsky=read.table('AAOmega_skies_Sep10.txt',header=T)				#Must be called GAMAsky
+
+rebuildState(TileCat=TCsamiclusY1,position='A119',basedir='.', configdir='/Applications/Work/configure-7.10.Darwin')
+rebuildState(TileCat=TCsamiclusY1,position='A168',basedir='.', configdir='/Applications/Work/configure-7.10.Darwin')
+rebuildState(TileCat=TCsamiclusY1,position='A2399',basedir='.', configdir='/Applications/Work/configure-7.10.Darwin')
+rebuildState(TileCat=TCsamiclusY1,position='A3880',basedir='.', configdir='/Applications/Work/configure-7.10.Darwin')
+rebuildState(TileCat=TCsamiclusY1,position=c('a4038','APMCC0917'),basedir='.', configdir='/Applications/Work/configure-7.10.Darwin')
+rebuildState(TileCat=TCsamiclusY1,position='A85',basedir='.', configdir='/Applications/Work/configure-7.10.Darwin')
+rebuildState(TileCat=TCsamiclusY1,position='EDCC0442',basedir='.', configdir='/Applications/Work/configure-7.10.Darwin')

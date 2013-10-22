@@ -1,0 +1,5 @@
+#! /usr/bin/Rscript --vanilla
+
+cat("Please enter date stamp for the last completed night in the form: YYMMDD i.e. 090228\t")
+date=readLines(file("stdin"),1)
+print(date)

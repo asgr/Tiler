@@ -1,0 +1,16 @@
+#! /usr/bin/Rscript --vanilla
+setwd('/Users/aaron/SAMI/cluster_tiling/samiY1SBRUN1')
+load('samiTiler-1.0beta.img')
+
+TCsamiclusY1=read.table('AAOmega_cluster_targets_Sep10.txt',header=T) 	#Can give this a different LHS name if it is passed to the function
+GAMAguide=read.table('AAOmega_guides_Sep10.txt',header=T)			#Must be called GAMAguide
+GAMAstspec=read.table('AAOmega_fstars_Sep10.txt',header=T)			#Must be called GAMAstspec
+GAMAsky=read.table('AAOmega_skies_Sep10.txt',header=T)				#Must be called GAMAsky
+
+Tiler(tileplus=5, position='A119', plate=c(0,1,0,1,0), runfolder=TRUE, TileCat=TCsamiclusY1, runoffset=1, updatefib=T, basedir='.', configdir='/Applications/Work/configure-7.10.Darwin')
+Tiler(tileplus=5, position='A168', plate=c(0,1,0,1,0), runfolder=TRUE, TileCat=TCsamiclusY1, runoffset=1, updatefib=F, basedir='.', configdir='/Applications/Work/configure-7.10.Darwin')
+Tiler(tileplus=5, position='A2399', plate=c(0,1,0,1,0), runfolder=TRUE, TileCat=TCsamiclusY1, runoffset=1, updatefib=F, basedir='.', configdir='/Applications/Work/configure-7.10.Darwin')
+Tiler(tileplus=5, position='A3880', plate=c(0,1,0,1,0), runfolder=TRUE, TileCat=TCsamiclusY1, runoffset=1, updatefib=F, basedir='.', configdir='/Applications/Work/configure-7.10.Darwin')
+Tiler(tileplus=5, position=c('a4038','APMCC0917'), plate=c(0,1,0,1,0), runfolder=TRUE, TileCat=TCsamiclusY1, runoffset=1, updatefib=F, basedir='.', configdir='/Applications/Work/configure-7.10.Darwin')
+Tiler(tileplus=5, position='A85', plate=c(0,1,0,1,0), runfolder=TRUE, TileCat=TCsamiclusY1, runoffset=1, updatefib=F, basedir='.', configdir='/Applications/Work/configure-7.10.Darwin')
+Tiler(tileplus=5, position='EDCC0442', plate=c(0,1,0,1,0), runfolder=TRUE, TileCat=TCsamiclusY1, runoffset=1, updatefib=F, basedir='.', configdir='/Applications/Work/configure-7.10.Darwin')
