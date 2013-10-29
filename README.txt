@@ -68,12 +68,12 @@ You can save this with
 
 The above read in commands are in the RUNMEtile.rscript and RUNMErebuild.rscript scripts inside the Tiler_?.?.tar.gz tarball.
 
-To run the tiling code for e.g. an individual cluster (rather than the RUNMEtile.rscript script) use:
+As an example, to run the tiling code for an individual POSITION (rather than the RUNMEtile.rscript script) you can use something that looks similar to:
 
 > Tiler(tileplus=5, position='A3880', plate=c(0,1,0,1,0), runfolder=TRUE, TileCat=TCsamiclusY1, runoffset=1, updatefib=T, basedir='.', configdir='/instsoft/2dF/misc_software/configure-7.10+.Linux')
 
 tileplus	Tiles to make
-position	Cluster name (can be a combination of clusters, see below)
+position	Position name (can be a combination of positions, see below)
 plate		Vector the same length as tileplus value. This will assign the given plate number to each tile
 runfolder	Puts the new file in its own TargetFork subdirectory
 TileCat		Name of the tiling catalogue to use (within R)
@@ -82,7 +82,7 @@ updatefib	Should the fibres be updated internally (usually best to keep this set
 basedir		Base directory to use for the folder structure, default is '.', i.e. where you are currently
 confider	Path to the 'configure' code. Example here is setup for the AATLXA machine (which has R and configure installed).
 
-To run multiple positions at once (useful if target clusters overlap etc) use:
+To run multiple positions at once (useful if target positions - e.g. clusters - overlap etc) use:
 
 > Tiler(tileplus=5, position=c('a4038','APMCC0917'), plate=c(0,1,0,1,0), runfolder=TRUE, TileCat=TCsamiclusY1, runoffset=1, updatefib=T, basedir='.', configdir='/instsoft/2dF/misc_software/configure-7.10+.Linux')
 
@@ -100,7 +100,7 @@ So to make a whole run this is probably what you want to run:
 
 I've made a file called RUNMEtile.rscript which you can run as an executable, it is inside the Tiler_?.?.tar.gz tarball.
 
-To update the survey you copy the observed .lis files into the 'Observed' directory for the appropriate cluster, then you can run:
+To update the survey you copy the observed .lis files into the 'Observed' directory for the appropriate POSITION folder, then you can run:
 
 > rebuildState(TileCat=TCsamiclusY1,position='A119',basedir='.', configdir='/Applications/Work/configure-8.0.Darwin')
 > rebuildState(TileCat=TCsamiclusY1,position='A168',basedir='.', configdir='/Applications/Work/configure-8.0.Darwin')
@@ -112,6 +112,6 @@ To update the survey you copy the observed .lis files into the 'Observed' direct
 
 These commands are in RUNMErebuild.rscript which you can run as an executable, it is inside the Tiler_?.?.tar.gz tarball.
 
-Once all of the cluster regions have been rebuilt you can re-run RUNMEtile.rscript (or the individual commands above). This works because the updated state of the survey is stored in a file called 'stopstate.r' that you'll find in the 'Observed' folder.
+Once all of the POSITION regions have been rebuilt you can re-run RUNMEtile.rscript (or the individual commands above). This works because the updated state of the survey is stored in a file called 'stopstate.r' that you'll find in the 'Observed' folder.
 
 That should be enough to get you going, email me at aaron.robotham@uwa.edu.au if you're stuck.
