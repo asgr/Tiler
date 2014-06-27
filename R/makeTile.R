@@ -86,7 +86,7 @@ cat(paste('\nUnused working\t\t',length(which(FibVec==0)),'\n',sep=''))
 if(length(which(FibVec==0))>5 & length(subset[,1]>550) & manual==FALSE & medshift==TRUE){
 	tilecens=cbind(round(median(subset[,1]),2),round(median(subset[,2]),2))
 	print(paste('BAD FIELD. Shifting tile centre to',tilecens[i,1],'RA/deg',tilecens[i,2],'Dec/deg and reconfiguring.'))
-	runCONFIG(long=subset[,1],lat=subset[,2],id=subset[,3],prior=subset[,4],mags=subset[,5],IPorig=IPorig,file=filename,tilecens=tilecens[i,],basedir=basedir,directory=directory, configdir=configdir, manual=manual, plate=plate, date=date)
+	runCONFIG(long=subset[,1],lat=subset[,2],id=subset[,3],prior=subset[,4],mags=subset[,5],IPorig=IPorig,label=filename,tilecens=tilecens[i,],basedir=basedir,directory=directory, configdir=configdir, manual=manual, plate=plate, date=date)
 templist=readLines(paste(basedir,directory,filename,'P',plate,'.lis',sep=''))
 tarIDs=grep('\\*.*G.*G.*',templist)
 guideIDs=grep('\\*.*guide',templist)
