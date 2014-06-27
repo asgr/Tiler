@@ -23,9 +23,9 @@ DATAguide=read.table(tilepath,header=T)			#Must be called DATAguide
 cat("Enter the path to the spectral standards catalogue\t")
 stspecpath=readLines(con = 'stdin',n=1)
 cat("Loading spectral standards data...\n")
-DATAstspec=read.table(stspecpath,header=T)  		#Must be called DATAguide
-
+DATAstspec=read.table(stspecpath,header=T)  		#Must be called DATAstspec
+                
 cat("Enter the path to the sky catalogue\t")
 skypath=readLines(con = 'stdin',n=1)
 cat("Loading sky data...\n")
-DATAsky=read.table(skypath,header=T)
+DATAsky=read.table(skypath,header=T)                    #Must be called DATAsky

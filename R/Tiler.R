@@ -7,10 +7,10 @@ options(stringsAsFactors=FALSE)
 
 info=read.table(paste(basedir,'/SurveyInfo.txt',sep=''),header=T)
 
-RAadd=min(TileCat[TileCat[,'POSITION']%in%position,'RA'])
-Decadd=min(TileCat[TileCat[,'POSITION']%in%position,'DEC'])
-raran=max(TileCat[TileCat[,'POSITION']%in%position,'RA'])-min(TileCat[TileCat[,'POSITION']%in%position,'RA'])
-decran=max(TileCat[TileCat[,'POSITION']%in%position,'DEC'])-min(TileCat[TileCat[,'POSITION']%in%position,'DEC'])
+RAadd=info[info[,'Region']== position,'RAmin']
+Decadd=info[info[,'Region']== position,'DECmin']
+raran=info[info[,'Region']== position,'RArange']
+decran=info[info[,'Region']== position,'DECrange']
 loc=info[info[,'Region']== position,'Loc']
 skirt=info[info[,'Region']== position,'Skirt']
 year=info[info[,'Region']== position,'Year']
@@ -193,7 +193,7 @@ tempTile=TileCat[TileCat[,'CATA_INDEX'] %in% TileSub & TileCat[,'PRIORITY_CLASS'
 		tartest=rep(0,length(testgrid[,1]))
 		sparsedists=table(sparsedists$ind[,1])
 		tartest[as.numeric(names(sparsedists))]=as.numeric(sparsedists)
-
+        
 		if(byden){tartestden=tartest/tartestPos}else{tartestden=tartest}
 		if(dofailcomp){tartestden=failtestPos/failtest}
 		#Here I allow for the possibility that more than one location is at the relative density peak/ target peak. This is almost certainly not an issue with DenGreedy (unlikely) but might be a problem when using Greedy.

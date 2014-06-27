@@ -7,11 +7,6 @@ library(Tiler) #If you have everything installed correctly, this should load fin
 
 cat("Reading tiling catalogue\n")
 TC32=read.table('DATAtile.tab',header=T)            #Can give this a different LHS name if it is passed to the function
-TC32[,'POSITION']='G12'
-TC32[TC32[,'RA']<150,'POSITION']='G09'
-TC32[TC32[,'RA']<50,'POSITION']='G02'
-TC32[TC32[,'RA']>200,'POSITION']='G15'
-TC32[TC32[,'RA']>300,'POSITION']='G23'
 cat("Reading guide catalogue\n")
 DATAguide=read.table('DATAguide.tab',header=T)			#Must be called DATAguide
 cat("Reading spectral standards catalogue\n")
@@ -21,8 +16,8 @@ DATAsky=read.table('DATAsky.tab',header=T)				  #Must be called DATAsky
 
 #Notice we only update the fibres for the first survey- after that they'll be up-to-date
 
-Tiler(tileplus=3, position='G02', plate=c(0,1,0), runfolder=TRUE, TileCat=TC32, runoffset=1, updatefib=exists('Fibres'), basedir='.', configdir='/Applications/Work/configure-8.0.Darwin')
-Tiler(tileplus=3, position='G09', plate=c(0,1,0), runfolder=TRUE, TileCat=TC32, runoffset=1, updatefib=exists('Fibres'), basedir='.', configdir='/Applications/Work/configure-8.0.Darwin')
-Tiler(tileplus=3, position='G12', plate=c(0,1,0), runfolder=TRUE, TileCat=TC32, runoffset=1, updatefib=exists('Fibres'), basedir='.', configdir='/Applications/Work/configure-8.0.Darwin')
-Tiler(tileplus=3, position='G15', plate=c(0,1,0), runfolder=TRUE, TileCat=TC32, runoffset=1, updatefib=exists('Fibres'), basedir='.', configdir='/Applications/Work/configure-8.0.Darwin')
-Tiler(tileplus=3, position='G23', plate=c(0,1,0), runfolder=TRUE, TileCat=TC32, runoffset=1, updatefib=exists('Fibres'), basedir='.', configdir='/Applications/Work/configure-8.0.Darwin')
+Tiler(tileplus=6, position='G02', plate=c(0,1,0,1,0,1), runfolder=TRUE, TileCat=TC, runoffset=1,restrict=c('lora',,'all','all','all','all','hira') updatefib=! exists('Fibres'), basedir='.', configdir='/Applications/Work/configure-8.0.Darwin')
+Tiler(tileplus=6, position='G09', plate=c(0,1,0,1,0,1), runfolder=TRUE, TileCat=TC, runoffset=1,restrict=c('lora',,'all','all','all','all','hira') updatefib=! exists('Fibres'), basedir='.', configdir='/Applications/Work/configure-8.0.Darwin')
+Tiler(tileplus=6, position='G12', plate=c(0,1,0,1,0,1), runfolder=TRUE, TileCat=TC, runoffset=1,restrict=c('lora',,'all','all','all','all','hira') updatefib=! exists('Fibres'), basedir='.', configdir='/Applications/Work/configure-8.0.Darwin')
+Tiler(tileplus=6, position='G15', plate=c(0,1,0,1,0,1), runfolder=TRUE, TileCat=TC, runoffset=1,restrict=c('lora',,'all','all','all','all','hira') updatefib=! exists('Fibres'), basedir='.', configdir='/Applications/Work/configure-8.0.Darwin')
+Tiler(tileplus=6, position='G23', plate=c(0,1,0,1,0,1), runfolder=TRUE, TileCat=TC, runoffset=1,restrict=c('lora',,'all','all','all','all','hira') updatefib=! exists('Fibres'), basedir='.', configdir='/Applications/Work/configure-8.0.Darwin')

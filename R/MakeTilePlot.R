@@ -3,6 +3,7 @@ function (data = "find", directory = "test", TileCat = TileV4f,
     sub = "all", save = FALSE, type = "png", left = TRUE, skirt = 0.4, 
     basedir = "~/Work/R/GAMA/Tiling", position = "g09") 
 {
+    if(any(colnames(TileCat)=='CATAID')){colnames(TileCat)[colnames(TileCat)=='CATAID']='CATA_INDEX'}
     options(stringsAsFactors=FALSE)
     data(PriConvMat,package='Tiler')
     if (is.character(data)) {

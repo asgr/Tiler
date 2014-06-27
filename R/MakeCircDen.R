@@ -13,10 +13,10 @@ DECreg={}
 
 info=read.table(paste(basedir,'/SurveyInfo.txt',sep=''),header=T)
 
-RAadd=min(TileCat[TileCat[,'POSITION']%in%position,'RA'])
-Decadd=min(TileCat[TileCat[,'POSITION']%in%position,'DEC'])
-raran=max(TileCat[TileCat[,'POSITION']%in%position,'RA'])-min(TileCat[TileCat[,'POSITION']%in%position,'RA'])
-decran=max(TileCat[TileCat[,'POSITION']%in%position,'DEC'])-min(TileCat[TileCat[,'POSITION']%in%position,'DEC'])
+RAadd=info[info[,'Region']== position,'RAmin']
+Decadd=info[info[,'Region']== position,'DECmin']
+raran=info[info[,'Region']== position,'RArange']
+decran=info[info[,'Region']== position,'DECrange']
 loc=info[info[,'Region']== position,'Loc']
 skirt=info[info[,'Region']== position,'Skirt']
 year=info[info[,'Region']== position,'Year']
