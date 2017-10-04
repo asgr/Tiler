@@ -91,7 +91,9 @@ startrun=1
 
 TileSub=AssignOrder[AssignOrder[,2]==0,1]
 
-catname='Undefined (check)'
+catname='Unknown'
+
+try({catname=as.character(as.list(match.call())$TileCat)})
 
 #Set colnames for tilelim
 
