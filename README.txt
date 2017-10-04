@@ -79,7 +79,7 @@ Run		The observing run number for the current semester.
 Loc		Name to use for survey region code
 Denpri		Minimum value for PRIORITY_CLASS that will be used to find the best tile position
 MainSclass	Minimum SURVEY_CLASS that defines the main survey- used to calculate the completeness properly
-LoPclass	Maximum PRIORITY_CLASS that will be sent to tiling
+LoPclass	Minimum PRIORITY_CLASS that will be sent to tiling
 ByDen		If TRUE density priority (lowest completeness first) is used to place tiles, if FALSE greedy priority (most targets left) is used to place tiles
 
 #Tiler package v1.1 updated G23 area
