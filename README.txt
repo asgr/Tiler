@@ -6,7 +6,7 @@ Create a directory specific for your current tiling survey (i.e. I usually make 
 
 objects:
 
-CATA_INDEX  RA DEC R_PETRO SURVEY_CLASS PRIORITY_CLASS POSITION
+CATA_INDEX  RA DEC MAG SURVEY_CLASS PRIORITY_CLASS POSITION
 9091700001      355.3979797000000076      -29.2363433999999991      14.4033909       6       8 APMCC0917
 9091700002      355.3943481000000020      -29.2308425999999990      17.5741386       6       9 APMCC0917
 9091700003      355.4186707000000069      -29.2293529999999997      18.9740582       6       9 APMCC0917
@@ -15,14 +15,14 @@ CATA_INDEX  RA DEC R_PETRO SURVEY_CLASS PRIORITY_CLASS POSITION
 CATA_INDEX	Object ID
 RA		Right ascension
 DEC		Declination
-R_PETRO		r-band petro mag
+MAG		Object magnitude
 SURVEY_CLASS	This specifies whether the object is main survey (above or equal to MainSclass)
 PRIORITY_CLASS 	Indicates the importance of each target between 1 (low) and 9 (high)
 POSITION	The survey region code for the object
 
 guides:
 
-ROWID RA DEC PSFMAG_R
+ROWID RA DEC MAG
 999091700096     355.4356384000000162     -29.4283104000000009     14.2486877
 999091700111     355.5883789000000093     -29.1087893999999991     14.0694313
 999091700138     355.3394470000000069     -29.4658717999999986     14.0480652
@@ -31,7 +31,7 @@ ROWID RA DEC PSFMAG_R
 ROWID		Object ID
 RA		Right ascension
 DEC		Declination
-PSFMAG_R	r-band PSF mag (can be filled with place-holder values)
+MAG	    Object magnitude (can be filled with place-holder values)
 
 skies:
 
@@ -46,7 +46,7 @@ DEC		Declination
 
 spec:
 
-ROWID RA DEC  PSFMAG_R PRIORITY_FLAG
+ROWID RA DEC  MAG PRIORITY_FLAG
 999091700001     355.3940734999999904     -29.2190398999999985     16.3626366      7
 999091700016     355.4709472999999775     -29.2705249999999992     17.1006565      7
 999091700022     355.4739989999999921     -29.2830486000000008     15.6917324      7
@@ -54,8 +54,8 @@ ROWID RA DEC  PSFMAG_R PRIORITY_FLAG
 
 ROWID		Object ID
 RA		Right ascension
-DEC		Declination
-PSFMAG_R	r-band PSF mag (can be filled with place-holder values)
+DEC     Declination
+MAG     Object magnitude (can be filled with place-holder values)
 PRIORITY_FLAG 	Indicates the importance of each target between 1 (low) and 9 (high)
 
 You also need a file containing information on your survey regions called 'SurveyInfo.txt', this should contain the following columns:

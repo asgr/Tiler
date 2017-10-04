@@ -9,11 +9,11 @@ function (TileCat = TileV4c, tilecens, filebase = "test", RAran = cbind(sqrt(3)/
     data(PriConvMat,package='Tiler')
     if (useIDs[1] == "all") {
         tempTilecat = TileCat[, c("RA", "DEC", "CATA_INDEX", 
-            "PRIORITY_CLASS", "R_PETRO")]
+            "PRIORITY_CLASS", "MAG")]
     }
     else {
         tempTilecat = TileCat[TileCat[, "CATA_INDEX"] %in% useIDs, 
-            c("RA", "DEC", "CATA_INDEX", "PRIORITY_CLASS", "R_PETRO")]
+            c("RA", "DEC", "CATA_INDEX", "PRIORITY_CLASS", "MAG")]
     }
     if (length(RAran[, 1]) == 1) {
         RAran = cbind(rep(RAran[, 1], length(tilecens[, 1])), 

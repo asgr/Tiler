@@ -2,8 +2,8 @@ makeTile <-
 function(TileCat=TileV5, tilecens, filebase='test', RAran=cbind(sqrt(3)/2,sqrt(3)/2), Decran=cbind(0.5,0.5), useIDs='all', magpri=FALSE, maglim=0.1, TileSub=TileSub,  minpri=2, denpri=8, plate=0, basedir='~/usr/local/bin/Tiler/', directory='eastMaGreedy', configdir="/Applications/configure-7.9.Darwin/",manual=FALSE,date='auto',medshift=TRUE){
   data(PriConvMat,package='Tiler')
   
-if(useIDs[1]=='all'){tempTilecat=TileCat[,c('RA','DEC','CATA_INDEX','PRIORITY_CLASS','R_PETRO')]}else{
-	tempTilecat=TileCat[TileCat[,'CATA_INDEX'] %in% useIDs,c('RA','DEC','CATA_INDEX','PRIORITY_CLASS','R_PETRO')]
+if(useIDs[1]=='all'){tempTilecat=TileCat[,c('RA','DEC','CATA_INDEX','PRIORITY_CLASS','MAG')]}else{
+	tempTilecat=TileCat[TileCat[,'CATA_INDEX'] %in% useIDs,c('RA','DEC','CATA_INDEX','PRIORITY_CLASS','MAG')]
 	}
 if(length(RAran[,1])==1){RAran=cbind(rep(RAran[,1],length(tilecens[,1])),rep(RAran[,2],length(tilecens[,1])))}
 if(length(Decran[,1])==1){Decran=cbind(rep(Decran[,1],length(tilecens[,1])),rep(Decran[,2],length(tilecens[,1])))}

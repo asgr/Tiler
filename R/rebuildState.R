@@ -155,7 +155,7 @@ print(paste('Remaining top priority objects:',length(TileCat[MSsel & TileCat[,'P
 
 print(paste('Survey Total Completeness',completeness))
 	
-tempTile=TileCat[TileCat[,'CATA_INDEX'] %in% TileSub & TileCat[,'PRIORITY_CLASS']>=denpri,c('RA','DEC','CATA_INDEX','R_PETRO')]	
+tempTile=TileCat[TileCat[,'CATA_INDEX'] %in% TileSub & TileCat[,'PRIORITY_CLASS']>=denpri,c('RA','DEC','CATA_INDEX','MAG')]	
 
 templist=readLines(paste(basedir,directory,filelist[totruns],sep=''))
 tarIDs=grep('\\*.*G.*G.*',templist)
@@ -204,7 +204,7 @@ TileSub=AssignOrder[AssignOrder[,2]==0,1]
 fibstats=rbind(fibstats,temp$fibstats)
 
 #Calculates the 0.1 magnitude bin completeness
-magcompleteness=1-hist(TileCat[TileCat[,'R_PETRO']>15 & TileCat[,'R_PETRO']<24 & TileCat[,'PRIORITY_CLASS']>=denpri & TileCat[,'POSITION']%in%position & TileCat[,'CATA_INDEX'] %in% TileSub,'R_PETRO'],breaks=seq(15, 24,by=0.1),plot=FALSE)$counts/hist(TileCat[MSsel & TileCat[,'R_PETRO']>15 & TileCat[,'R_PETRO']<24,'R_PETRO'],breaks=seq(15, 24,by=0.1),plot=FALSE)$counts
+magcompleteness=1-hist(TileCat[TileCat[,'MAG']>15 & TileCat[,'MAG']<24 & TileCat[,'PRIORITY_CLASS']>=denpri & TileCat[,'POSITION']%in%position & TileCat[,'CATA_INDEX'] %in% TileSub,'MAG'],breaks=seq(15, 24,by=0.1),plot=FALSE)$counts/hist(TileCat[MSsel & TileCat[,'MAG']>15 & TileCat[,'MAG']<24,'MAG'],breaks=seq(15, 24,by=0.1),plot=FALSE)$counts
 #Calculates the new total completeness that is printed out to the tilelim object that tracks the progress of the tiling
 completeness=1-length(TileCat[TileCat[,'PRIORITY_CLASS']>=denpri & TileCat[,'POSITION']%in%position & TileCat[,'CATA_INDEX'] %in% TileSub,1])/length(TileCat[MSsel,1])
 #make MagLims in the format needed for MakCircDen

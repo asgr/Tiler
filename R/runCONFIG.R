@@ -50,7 +50,7 @@ guideidtemp=guideid
 for(i in 1:length(guideid)){guideid[i]=paste('F',formatC(guideidtemp[i],width=8,flag=0),sep='')}
 rm(guideidtemp)
 
-guides=cbind(DATAguide[(DATAguide[,'RA']-cenRA)^2+(DATAguide[,'DEC']-cenDec)^2<1,c('RA','DEC','PSFMAG_R')])
+guides=cbind(DATAguide[(DATAguide[,'RA']-cenRA)^2+(DATAguide[,'DEC']-cenDec)^2<1,c('RA','DEC','MAG')])
 if(length(guides[,1])>50){samp=sample(1:length(guides[,1]),50);guides=guides[samp,];guideid=guideid[samp]}
 
 output=rbind(output,cbind(guideid,deg2hms(guides[,1]),deg2dms(guides[,2]),rep('F',length(guides[,1])),rep(9,length(guides[,1])),formatC(guides[,3], width=5, digits=2, flag=0, format='f'),rep(0,length(guides[,1])),rep('guide',length(guides[,1]))))}
@@ -74,7 +74,7 @@ stspecidtemp=stspecid
 for(i in 1:length(stspecid)){stspecid[i]=paste('S',formatC(stspecidtemp[i],width=8,flag=0),sep='')}
 rm(stspecidtemp)
 
-stspec=cbind(DATAstspec[(DATAstspec[,'RA']-cenRA)^2+(DATAstspec[,'DEC']-cenDec)^2<0.9,c('RA','DEC','PSFMAG_R','PRIORITY_FLAG')])
+stspec=cbind(DATAstspec[(DATAstspec[,'RA']-cenRA)^2+(DATAstspec[,'DEC']-cenDec)^2<0.9,c('RA','DEC','MAG','PRIORITY_FLAG')])
 if(length(stspec[,1])>3){
 	tempsel=which(stspec[,'PRIORITY_FLAG']==7)
 	if(length(tempsel)<3){tempsel=c(tempsel,which(stspec[,'PRIORITY_FLAG']<7))}
