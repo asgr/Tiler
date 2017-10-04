@@ -75,7 +75,7 @@ function (data = "find", directory = "test", save = FALSE, type = "png",
     par(mar = c(5.1, 4.1, 0, 2.1))
     image(z = data$maglim, breaks = c(0, 0.8, 0.9, 0.95, 0.99, 
         1 - 1e-08, 1), col = grey(0:5/5), y = c(seq(15, 24, by = 0.1)), 
-        x = sort(data$tilelim[, 1]), xlab = "Tile No.", ylab = "R petro", 
+        x = sort(data$tilelim[, 1]), xlab = "Tile No.", ylab = "Magnitude", 
         xlim = c(min(data$tilelim[, 1]), max(c(min(data$tilelim[, 
             1]) + 20, max(data$tilelim[, 1])))))
     abline(v = c(loc80, loc90), lty = 3)
