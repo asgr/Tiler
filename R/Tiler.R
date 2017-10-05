@@ -1,5 +1,5 @@
 Tiler <-
-function(tileplus=5, position='A3880', directory='default', plate=0, runfolder=FALSE, restrict='all', interact=FALSE, manual=FALSE,justfld=FALSE,dofailcomp=FALSE, start='default',norep=FALSE, bw=sqrt(2)/10, TileCat=TCsamiclusY1, runoffset=1, date='get', report=FALSE, pdfopen=FALSE, movie=FALSE, updatefib=FALSE, basedir='~/SAMI/cluster_tiling/samiY1SBRUN1/', configdir='/Applications/Work/configure-7.10.Darwin', convertdir='/sw/bin', latexdir='/Applications/TeX', dvipsdir='/sw/bin'){
+function(tileplus=5, position='A3880', directory='default', plate=0, runfolder=FALSE, restrict='all', interact=FALSE, manual=FALSE,justfld=FALSE,dofailcomp=FALSE, start='default',norep=FALSE, bw=sqrt(2)/10, TileCat=TCsamiclusY1, runoffset=1, date='get', report=FALSE, pdfopen=FALSE, movie=FALSE, updatefib=FALSE, basedir='~/SAMI/cluster_tiling/samiY1SBRUN1/', configdir='/Applications/Work/configure-7.10.Darwin', convertdir='/sw/bin', latexdir='/Applications/TeX', dvipsdir='/sw/bin', append_letter='G'){
 if(any(colnames(TileCat)=='CATAID')){colnames(TileCat)[colnames(TileCat)=='CATAID']='CATA_INDEX'}
 options(scipen=999)
 
@@ -29,7 +29,7 @@ if(file.exists(paste(basedir,'/',directory,'/Observed/stopstate.r',sep=''))){con
 dir.create(paste(basedir,'/',directory,'/Observed',sep=''),showWarnings=FALSE,recursive=TRUE)
 	
 #Checks the survey has been started when continue=TRUE.
-if(continue==TRUE & file.exists(paste(basedir,'/',directory,'/Observed/stopstate.r',sep=''))==FALSE){print('stopstate.r does not exist in specified directory, set continue=FALSE to start a fresh field configuration.');break}
+if(continue==TRUE & file.exists(paste(basedir,'/',directory,'/Observed/stopstate.r',sep=''))==FALSE){message('stopstate.r does not exist in specified directory, set continue=FALSE to start a fresh field configuration.');break}
 
 #Checks whether the plate/date flag is a legal vector length, which is either 1 (in which case all plate codes are set to the same value for that run) or equal to tileplus
 if(tileplus>0 & ((length(plate)>1 & length(plate)<tileplus) | length(plate)>tileplus)){stop(paste('Length of plate vector is',length(plate),'should be either 1 or',tileplus))}
@@ -55,8 +55,8 @@ if(runfolder!=FALSE & runfolder!=TRUE){
 }
 
 #Here I install (if required) and load the relevant packages- needs adjusting depending on your machine
-#if(!'fields' %in% installed.packages()[,'Package']){print('Installing required fields package');install.packages('fields')}
-#if(!'plotrix' %in% installed.packages()[,'Package']){print('Installing required plotrix package');install.packages('plotrix')}
+#if(!'fields' %in% installed.packages()[,'Package']){message('Installing required fields package');install.packages('fields')}
+#if(!'plotrix' %in% installed.packages()[,'Package']){message('Installing required plotrix package');install.packages('plotrix')}
 #library('fields',lib=c('/home/aatlxa/gama/R/x86_64-redhat-linux-gnu-library/2.9/',.libPaths()))
 #library('plotrix',lib=c('/home/aatlxa/gama/R/x86_64-redhat-linux-gnu-library/2.9/',.libPaths()))
 
@@ -83,7 +83,7 @@ if(continue==FALSE & tileplus>0){
 	#stopstate.r is all of the available tiling information for a run, so when continuing this must be loaded
 	load(paste(basedir,directory,'Observed/stopstate.r',sep=''))
 	#print out a summary for a sanity check
-	print(summary(stopstate$assign))
+	message(summary(stopstate$assign))
 	#Various vectors and tables are stripped out of the stopstate image and assigned to the correct object for the session
 	AssignOrder=stopstate$assign
 	MagLims=stopstate$maglim
@@ -169,12 +169,12 @@ if(tileplus>0){
 	for(runs in startrun:(startrun+tileplus-1)){
 		#Checks for file called 'stop' in main directory.
 		if(file.exists(paste(basedir,directory,'/stop',sep=''))){stop('Stop file found. STOPPING!')}
-		print(paste('Run',runs,': stopping after',(startrun+tileplus-1)))
+		message(paste('Run',runs,': stopping after',(startrun+tileplus-1)))
 		#Generate main smaple completeness
 		completeness=1-length(TileCat[MSsel & TileCat[,'CATA_INDEX'] %in% TileSub & TileCat[,'PRIORITY_CLASS']>=denpri,1])/length(TileCat[MSsel,1])
 		#Print some useful stuff
-		print(paste('Remaining top priority objects:',length(TileCat[MSsel & TileCat[,'PRIORITY_CLASS']>=denpri & TileCat[,'CATA_INDEX'] %in% TileSub,1])))
-		print(paste('Survey Total Completeness',completeness))
+		message(paste('Remaining top priority objects:',length(TileCat[MSsel & TileCat[,'PRIORITY_CLASS']>=denpri & TileCat[,'CATA_INDEX'] %in% TileSub,1])))
+		message(paste('Survey Total Completeness',completeness))
 		
 		if(completeness==1){stop('Survey Complete. Go have some tea.')}
 		
@@ -213,7 +213,7 @@ tempTile=TileCat[TileCat[,'CATA_INDEX'] %in% TileSub & TileCat[,'PRIORITY_CLASS'
 			tileloc=testgrid[resample(maxlocs,1),]
 
 		#Here I define the circular subset of IDs to be sent to makeTile for configuring
-		print(paste('The location of the chosen tile: ',tileloc[1],' (RA/deg) ',tileloc[2],' (Dec/deg)'))
+		message(paste('The location of the chosen tile: ',tileloc[1],' (RA/deg) ',tileloc[2],' (Dec/deg)'))
 		alldistsind=fields.rdist.near(sph2car(as.matrix(tileloc),deg=T),sph2car(as.matrix(TileCat[,c('RA','DEC')]),deg=T),mean.neighbor=length(TileCat[,1]),delta=pi/180)$ind
 		useIDs=TileCat[(1:length(TileCat[,1])) %in% alldistsind[,2] & TileCat[,'CATA_INDEX'] %in% TileSub & TileCat[,'CATA_INDEX'] %in% norepvec,'CATA_INDEX']
 		#Currently magpri and RA/Decran don't do anything, they are set such that they neither influence the coord cuts or magnitude weighting. Might want to strip makeTile down to a more basic function eventually...
@@ -223,12 +223,12 @@ tempTile=TileCat[TileCat[,'CATA_INDEX'] %in% TileSub & TileCat[,'PRIORITY_CLASS'
 			#This is a modification that stops the location of the tile g12 to become the median of the points within it when completeness is low. This stops main surevy targets being missed in the last steps of the survey
 			if(completeness>0.99){medshift=F}else{medshift=T}
 			#start running makeTile, which does all of the hard work of actually tiling- see makeTile for details. Briefly, it generates the .fld, configures it, and re-runs if the number of assigned fibres is low using a median shift (unless this has been stopped by the logic above)
-			temp=makeTile(tilecens=tileloc,filebase=paste(stamp,'tile',formatC(runs,flag=0,width=3),sep=''), TileCat=TileCat, RAran=cbind(1,1), Decran=cbind(1,1), useIDs=useIDs, TileSub=TileSub, minpri=minpri, basedir=basedir, directory=directory, configdir=configdir, denpri=denpri, manual=manual, plate=plate[runs+1-startrun], date=date[runs+1-startrun],medshift=medshift)
+			temp=makeTile(tilecens=tileloc,filebase=paste(stamp,'tile',formatC(runs,flag=0,width=3),sep=''), TileCat=TileCat, RAran=cbind(1,1), Decran=cbind(1,1), useIDs=useIDs, TileSub=TileSub, minpri=minpri, basedir=basedir, directory=directory, configdir=configdir, denpri=denpri, manual=manual, plate=plate[runs+1-startrun], date=date[runs+1-startrun],medshift=medshift, append_letter=append_letter)
 			#Here we find which objects have been assigned
 			tileloc=temp$tileCens
 			AssignOrder[AssignOrder[,1] %in% temp$dumpID,2]=runs
 			TileSub=AssignOrder[AssignOrder[,2]==0,1]
-			if(norep){norepvec=norepvec[! norepvec %in% temp$intile];print(length(norepvec));write(temp$intile,file='~/usr/local/bin/Tiler/norepdump',append=TRUE)}
+			if(norep){norepvec=norepvec[! norepvec %in% temp$intile];message(length(norepvec));write(temp$intile,file='~/usr/local/bin/Tiler/norepdump',append=TRUE)}
 			fibstats=rbind(fibstats,temp$fibstats)
 		}else{
 			temp=makeFld(tileloc, paste(stamp,'tile',formatC(runs,flag=0,width=3),sep=''), TileCat=TileCat, RAran=cbind(1,1), Decran=cbind(1,1), useIDs=useIDs, TileSub=TileSub, minpri=minpri, basedir=basedir, directory=directory, configdir=configdir, denpri=denpri, manual=manual, plate=plate[runs+1-startrun], date=date[runs+1-startrun])

@@ -10,7 +10,7 @@ runfolder='???'
 interact=FALSE
 manual=FALSE
 
-print(paste('Rebuilding survey state for',position))
+message(paste('Rebuilding survey state for',position))
 
 info=read.table(paste(basedir,'/SurveyInfo.txt',sep=''),header=T)
 
@@ -150,12 +150,12 @@ if(file.exists(paste(basedir,directory,'/stop',sep=''))){stop('STOPPING!!!')}
 
 runs=as.numeric(unlist(strsplit(unlist(strsplit(filelist[totruns],split='.*tile'))[2],split='-'))[1])
 
-print(paste('Run',runs,'. Remaining',length(filelist)-totruns+1))
+message(paste('Run',runs,'. Remaining',length(filelist)-totruns+1))
 completeness=1-length(TileCat[MSsel & TileCat[,'CATA_INDEX'] %in% TileSub & TileCat[,'PRIORITY_CLASS']>=denpri,1])/length(TileCat[MSsel,1])
 
-print(paste('Remaining top priority objects:',length(TileCat[MSsel & TileCat[,'PRIORITY_CLASS']>=denpri & TileCat[,'CATA_INDEX'] %in% TileSub,1])))
+message(paste('Remaining top priority objects:',length(TileCat[MSsel & TileCat[,'PRIORITY_CLASS']>=denpri & TileCat[,'CATA_INDEX'] %in% TileSub,1])))
 
-print(paste('Survey Total Completeness',completeness))
+message(paste('Survey Total Completeness',completeness))
 	
 tempTile=TileCat[TileCat[,'CATA_INDEX'] %in% TileSub & TileCat[,'PRIORITY_CLASS']>=denpri,c('RA','DEC','CATA_INDEX','MAG')]	
 
@@ -195,7 +195,7 @@ if(length(grep('\\-',tiletext[5]))==1){decsign=-1}
 
 tilecens=cbind(hms2deg(as.numeric(tiletext[2]),as.numeric(tiletext[3]),as.numeric(tiletext[4])),dms2deg(abs(as.numeric(tiletext[5])),as.numeric(tiletext[6]),as.numeric(tiletext[7]),decsign))
 
-print(paste('Final used tile centre:',tilecens[1,1],'(RA/deg)',tilecens[1,2],'(Dec/deg)'))
+message(paste('Final used tile centre:',tilecens[1,1],'(RA/deg)',tilecens[1,2],'(Dec/deg)'))
 
 temp=list(dumpID=dumpIDs,tileCens=tilecens,fibstats=FibVec)
 

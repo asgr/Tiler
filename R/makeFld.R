@@ -47,7 +47,7 @@ function (TileCat = TileV4c, tilecens, filebase = "test", RAran = cbind(sqrt(3)/
     useIDs = useIDs[!useIDs %in% tempSplits$collide]
     filename = paste(filebase, "-", round(tilecens[i, 1], 2), 
         "-", round(tilecens[i, 2], 2), sep = "")
-    print(paste("Filename for next configuring: ", filename, 
+    message(paste("Filename for next configuring: ", filename, 
         ".fld", sep = ""))
     subset[subset[, 3] %in% colliders, 4] = subset[subset[, 3] %in% 
         colliders, 4] + 1
@@ -67,7 +67,7 @@ function (TileCat = TileV4c, tilecens, filebase = "test", RAran = cbind(sqrt(3)/
     }
     subset = subset[confIDs, ]
     IPorig = IPorig[confIDs]
-    print(paste("Total Objects sent to configure: ", length(subset[, 
+    message(paste("Total Objects sent to configure: ", length(subset[, 
         1]), sep = ""))
     if (magpri == FALSE) {
     }

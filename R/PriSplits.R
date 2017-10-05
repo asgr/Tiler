@@ -20,7 +20,7 @@ function (TileSub, TileCat = TileV4g, useIDs, proximity = 40,
             "CATA_INDEX"][temp$ind[, 2]]), ncol = 2)
         temptab = table(temptileIDs[, 1]) - 1
         temptab = temptab[temptab > 0]
-        print("Remaining 10 worst colliders")
+        message("Remaining 10 worst colliders")
         print(sort(temptab, decreasing = TRUE)[1:10])
         temptileIDs = matrix(temptileIDs[temptileIDs[, 1] %in% 
             useIDs, ], ncol = 2)

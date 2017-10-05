@@ -1,5 +1,5 @@
 runCONFIG <-
-function(long,lat,id,prior,mags,IPorig,file='test',label='2dF test field',alocate=TRUE,guides=TRUE,sky=TRUE,stanspec=TRUE,tilecens=FALSE,date='auto',basedir='~/Work/R/GAMA/Tiling/',directory='test/', configdir="/Applications/Work/configure-7.9.Darwin/", manual=FALSE, plate=0){
+function(long,lat,id,prior,mags,IPorig,file='test',label='2dF test field',alocate=TRUE,guides=TRUE,sky=TRUE,stanspec=TRUE,tilecens=FALSE,date='auto',basedir='~/Work/R/GAMA/Tiling/',directory='test/', configdir="/Applications/Work/configure-7.9.Darwin/", manual=FALSE, plate=0, append_letter='G'){
 tempsph=cbind(long=long,lat=lat)
 N=length(long)
 
@@ -37,7 +37,7 @@ day=temp[3]
 idtemp=id
 nametargets=id
 for(i in 1:length(id)){
-	id[i]=paste('G',formatC(idtemp[i],width=6,format='f',flag=0,digits=0),sep='')
+	id[i]=paste(append_letter,formatC(idtemp[i],width=6,format='f',flag=0,digits=0),sep='')
 nametargets[i]=paste(id[i],'_P',IPorig[i],'_',formatC(long[i],width=7,digits=2,flag=0,format='f'),'_',formatC(lat[i],width=5,digits=2,flag=0,format='f'),sep='')
 	}
 rm(idtemp)
@@ -89,12 +89,12 @@ write(paste("*\nLABEL ",label,'P',plate,"\nUTDATE ",year,month,day,"\nCENTRE ",h
 write.table(output,file=paste(basedir,directory,file,'P',plate,'.fld',sep=''),append=TRUE,sep=' ',row.names=FALSE,col.names=FALSE,quote=FALSE)
 if(alocate){
 	if(manual==FALSE & skylogic){
-    print(paste(configdir,'configure -a -f ',basedir,directory,file,'P',plate,'.fld -s -sky 25 -p ',plate,' -I \'2dF-AAOmega\'',sep=''))
+    message(paste(configdir,'configure -a -f ',basedir,directory,file,'P',plate,'.fld -s -sky 25 -p ',plate,' -I \'2dF-AAOmega\'',sep=''))
     system(paste(configdir,'configure -a -f ',basedir,directory,file,'P',plate,'.fld -s -sky 25 -p ',plate,' -I \'2dF-AAOmega\'',sep=''))}
 	if(manual==FALSE & skylogic==FALSE){system(paste(configdir,'configure -a -f ',basedir,directory,file,'P',plate,'.fld -s -sky 0 -p ',plate,' -I \'2dF-AAOmega\'',sep=''))}
 	if(manual==TRUE){
     system(paste(configdir,'configure -f ',basedir,directory,file,'P',plate,'.fld -p ',plate,' -I \'2dF-AAOmega\' &',sep=''))
-		print(paste('When ',file,'P',plate,'.sds and ',file,'P',plate,'.lis files have been saved inside the main directory for the run (should be the default one) type 99. If quitting, type 666.',sep=''))
+		message(paste('When ',file,'P',plate,'.sds and ',file,'P',plate,'.lis files have been saved inside the main directory for the run (should be the default one) type 99. If quitting, type 666.',sep=''))
 		checklis=FALSE
 		checksds=FALSE
 		while((checklis & checksds) == FALSE){
@@ -105,11 +105,11 @@ if(alocate){
 				checklis=file.exists(paste(basedir,directory,file,'P',plate,'.lis',sep=''))
 				checksds=file.exists(paste(basedir,directory,file,'P',plate,'.sds',sep=''))
 				
-				if(checklis==FALSE){print(paste(file,'P',plate,'.lis file has not been saved correctly, try again',sep=''))}
-				if(checksds==FALSE){print(paste(file,'P',plate,'.sds file has not been saved correctly, try again',sep=''))}
-				if(checklis==FALSE | checksds==FALSE){print('When file(s) saved, type 99. If quitting type 666')}
-				}else{print('Incorrect entry, type 99. If quitting type 666')}
-				}else{print('Incorrect entry, type 99. If quitting type 666')}
+				if(checklis==FALSE){message(paste(file,'P',plate,'.lis file has not been saved correctly, try again',sep=''))}
+				if(checksds==FALSE){message(paste(file,'P',plate,'.sds file has not been saved correctly, try again',sep=''))}
+				if(checklis==FALSE | checksds==FALSE){message('When file(s) saved, type 99. If quitting type 666')}
+				}else{message('Incorrect entry, type 99. If quitting type 666')}
+				}else{message('Incorrect entry, type 99. If quitting type 666')}
 			}
 		}
 	}
