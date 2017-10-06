@@ -1,4 +1,4 @@
-makeFld <-
+MakeFld <-
 function (TileCat = TileV4c, tilecens, filebase = "test", RAran = cbind(sqrt(3)/2, 
     sqrt(3)/2), Decran = cbind(0.5, 0.5), useIDs = "all", magpri = FALSE, 
     maglim = 0.1, TileSub = TileSub, minpri = 2, denpri = 8, 

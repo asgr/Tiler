@@ -1,5 +1,5 @@
 rebuildState <-
-function(directory='default', TileCat=TileV4f, inputfile=FALSE, position='g09', plate=0, denpri=8, minpri=1, bw=sqrt(2)/10, date='auto', report=FALSE, pdfopen=FALSE, movie=FALSE, updatefib=FALSE, byden=TRUE, basedir='~/Work/R/GAMA/Tiling/', configdir='/Applications/Work/configure-7.9.Darwin', convertdir='/sw/bin', latexdir='/usr/texbin', dvipsdir='/sw/bin',survey=1){
+function(directory='default', TileCat=TileV4f, inputfile=FALSE, position='g09', plate=0, denpri=8, minpri=1, bw=sqrt(2)/10, date='auto', report=FALSE, pdfopen=FALSE, movie=FALSE, updatefib=FALSE, byden=TRUE, basedir='.', configdir='/Applications/Work/configure-7.9.Darwin', convertdir='/sw/bin', latexdir='/usr/texbin', dvipsdir='/sw/bin',survey=1, append_letter='G'){
 if(any(colnames(TileCat)=='CATAID')){colnames(TileCat)[colnames(TileCat)=='CATAID']='CATA_INDEX'}
 options(scipen=999)
 options(stringsAsFactors=FALSE)
@@ -160,7 +160,7 @@ message(paste('Survey Total Completeness',completeness))
 tempTile=TileCat[TileCat[,'CATA_INDEX'] %in% TileSub & TileCat[,'PRIORITY_CLASS']>=denpri,c('RA','DEC','CATA_INDEX','MAG')]	
 
 templist=readLines(paste(basedir,directory,filelist[totruns],sep=''))
-tarIDs=grep('\\*.*G.*G.*',templist)
+tarIDs=grep(paste('\\*.*',append_letter,'.*',append_letter,'.*',sep=''),templist)
 guideIDs=grep('\\*.*guide',templist)
 skyIDs=grep('\\*.*sky',templist)
 specIDs=grep('\\*.*stspec',templist)
@@ -169,7 +169,7 @@ startFibs=grep('\\*Fibre',templist)
 dumpIDs={}
 
 for(i2 in 1:length(tarIDs)){	
-dumpIDs=c(dumpIDs,as.numeric(unlist(strsplit(unlist(strsplit(templist[tarIDs[i2]]," +"))[3],'G'))[2]))}
+dumpIDs=c(dumpIDs,as.numeric(unlist(strsplit(unlist(strsplit(templist[tarIDs[i2]]," +"))[3],append_letter))[2]))}
 
 plate=as.numeric(sub('\\.lis','',sub('.*P','',filelist[totruns])))
 

@@ -1,5 +1,5 @@
 Tiler <-
-function(tileplus=5, position='A3880', directory='default', plate=0, runfolder=FALSE, restrict='all', interact=FALSE, manual=FALSE,justfld=FALSE,dofailcomp=FALSE, start='default',norep=FALSE, bw=sqrt(2)/10, TileCat=TCsamiclusY1, runoffset=1, date='get', report=FALSE, pdfopen=FALSE, movie=FALSE, updatefib=FALSE, basedir='~/SAMI/cluster_tiling/samiY1SBRUN1/', configdir='/Applications/Work/configure-7.10.Darwin', convertdir='/sw/bin', latexdir='/Applications/TeX', dvipsdir='/sw/bin', append_letter='G'){
+function(tileplus=5, position='A3880', directory='default', plate=0, runfolder=FALSE, restrict='all', interact=FALSE, manual=FALSE,justfld=FALSE,dofailcomp=FALSE, start='default',norep=FALSE, bw=sqrt(2)/10, TileCat=TCsamiclusY1, runoffset=1, date='get', report=FALSE, pdfopen=FALSE, movie=FALSE, updatefib=FALSE, basedir='.', configdir='/Applications/Work/configure-7.10.Darwin', convertdir='/sw/bin', latexdir='/Applications/TeX', dvipsdir='/sw/bin', append_letter='G'){
 if(any(colnames(TileCat)=='CATAID')){colnames(TileCat)[colnames(TileCat)=='CATAID']='CATA_INDEX'}
 options(scipen=999)
 
@@ -83,7 +83,8 @@ if(continue==FALSE & tileplus>0){
 	#stopstate.r is all of the available tiling information for a run, so when continuing this must be loaded
 	load(paste(basedir,directory,'Observed/stopstate.r',sep=''))
 	#print out a summary for a sanity check
-	message(summary(stopstate$assign))
+    message{'Continuing from where we were, the current tile assignment summary info is:'}
+	print(summary(stopstate$assign))
 	#Various vectors and tables are stripped out of the stopstate image and assigned to the correct object for the session
 	AssignOrder=stopstate$assign
 	MagLims=stopstate$maglim
@@ -212,18 +213,18 @@ tempTile=TileCat[TileCat[,'CATA_INDEX'] %in% TileSub & TileCat[,'PRIORITY_CLASS'
 			#Calc the positions with the same value as the max, then sample a single position from this randomly. Using the my own function resample to stop undesired sampling when maxlocs is of length 1 (in this case it will sample from 1:maxlocs)
 			tileloc=testgrid[resample(maxlocs,1),]
 
-		#Here I define the circular subset of IDs to be sent to makeTile for configuring
+		#Here I define the circular subset of IDs to be sent to MakeTile for configuring
 		message(paste('The location of the chosen tile: ',tileloc[1],' (RA/deg) ',tileloc[2],' (Dec/deg)'))
 		alldistsind=fields.rdist.near(sph2car(as.matrix(tileloc),deg=T),sph2car(as.matrix(TileCat[,c('RA','DEC')]),deg=T),mean.neighbor=length(TileCat[,1]),delta=pi/180)$ind
 		useIDs=TileCat[(1:length(TileCat[,1])) %in% alldistsind[,2] & TileCat[,'CATA_INDEX'] %in% TileSub & TileCat[,'CATA_INDEX'] %in% norepvec,'CATA_INDEX']
-		#Currently magpri and RA/Decran don't do anything, they are set such that they neither influence the coord cuts or magnitude weighting. Might want to strip makeTile down to a more basic function eventually...
+		#Currently magpri and RA/Decran don't do anything, they are set such that they neither influence the coord cuts or magnitude weighting. Might want to strip MakeTile down to a more basic function eventually...
 		stamp=paste(paste(position,collapse=''),'_Y',year,'_S',semester,'_R',run,sep='')
 
 		if(justfld==FALSE){
 			#This is a modification that stops the location of the tile g12 to become the median of the points within it when completeness is low. This stops main surevy targets being missed in the last steps of the survey
 			if(completeness>0.99){medshift=F}else{medshift=T}
-			#start running makeTile, which does all of the hard work of actually tiling- see makeTile for details. Briefly, it generates the .fld, configures it, and re-runs if the number of assigned fibres is low using a median shift (unless this has been stopped by the logic above)
-			temp=makeTile(tilecens=tileloc,filebase=paste(stamp,'tile',formatC(runs,flag=0,width=3),sep=''), TileCat=TileCat, RAran=cbind(1,1), Decran=cbind(1,1), useIDs=useIDs, TileSub=TileSub, minpri=minpri, basedir=basedir, directory=directory, configdir=configdir, denpri=denpri, manual=manual, plate=plate[runs+1-startrun], date=date[runs+1-startrun],medshift=medshift, append_letter=append_letter)
+			#start running MakeTile, which does all of the hard work of actually tiling- see MakeTile for details. Briefly, it generates the .fld, configures it, and re-runs if the number of assigned fibres is low using a median shift (unless this has been stopped by the logic above)
+			temp=MakeTile(tilecens=tileloc,filebase=paste(stamp,'tile',formatC(runs,flag=0,width=3),sep=''), TileCat=TileCat, RAran=cbind(1,1), Decran=cbind(1,1), useIDs=useIDs, TileSub=TileSub, minpri=minpri, basedir=basedir, directory=directory, configdir=configdir, denpri=denpri, manual=manual, plate=plate[runs+1-startrun], date=date[runs+1-startrun],medshift=medshift, append_letter=append_letter)
 			#Here we find which objects have been assigned
 			tileloc=temp$tileCens
 			AssignOrder[AssignOrder[,1] %in% temp$dumpID,2]=runs

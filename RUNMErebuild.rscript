@@ -14,11 +14,11 @@ DATAstspec=read.table('DATAstspec.tab',header=T)		#Must be called DATAstspec
 cat("Reading sky catalogue\n")
 DATAsky=read.table('DATAsky.tab',header=T)				  #Must be called DATAsky
 
-rebuildState(TileCat=TC32,position='G02',basedir='.', configdir='/Applications/Work/configure-8.0.Darwin',updatefib=exists('Fibres'))
-rebuildState(TileCat=TC32,position='G09',basedir='.', configdir='/Applications/Work/configure-8.0.Darwin',updatefib=exists('Fibres'))
-rebuildState(TileCat=TC32,position='G12',basedir='.', configdir='/Applications/Work/configure-8.0.Darwin',updatefib=exists('Fibres'))
-rebuildState(TileCat=TC32,position='G15',basedir='.', configdir='/Applications/Work/configure-8.0.Darwin',updatefib=exists('Fibres'))
-rebuildState(TileCat=TC32,position='G23',basedir='.', configdir='/Applications/Work/configure-8.0.Darwin',updatefib=exists('Fibres'))
+rebuildState(TileCat=TC32, position='G02', basedir='.', configdir='/Applications/Work/configure-8.0.Darwin', updatefib=!exists('Fibres'))
+rebuildState(TileCat=TC32, position='G09', basedir='.', configdir='/Applications/Work/configure-8.0.Darwin', updatefib=!exists('Fibres'))
+rebuildState(TileCat=TC32, position='G12', basedir='.', configdir='/Applications/Work/configure-8.0.Darwin', updatefib=!exists('Fibres'))
+rebuildState(TileCat=TC32, position='G15', basedir='.', configdir='/Applications/Work/configure-8.0.Darwin', updatefib=!exists('Fibres'))
+rebuildState(TileCat=TC32, position='G23', basedir='.', configdir='/Applications/Work/configure-8.0.Darwin', updatefib=!exists('Fibres'))
 
 report(directory='G02/Observed',latex=TRUE,basedir='.',TileCat=TC32,latexdir='/sw/bin/',position='G02')
 report(directory='G09/Observed',latex=TRUE,basedir='.',TileCat=TC32,latexdir='/sw/bin/',position='G09')

@@ -1,4 +1,4 @@
-makeTile <-
+MakeTile <-
 function(TileCat=TileV5, tilecens, filebase='test', RAran=cbind(sqrt(3)/2,sqrt(3)/2), Decran=cbind(0.5,0.5), useIDs='all', magpri=FALSE, maglim=0.1, TileSub=TileSub,  minpri=2, denpri=8, plate=0, basedir='~/usr/local/bin/Tiler/', directory='eastMaGreedy', configdir="/Applications/configure-7.9.Darwin/",manual=FALSE,date='auto',medshift=TRUE, append_letter='G'){
   data(PriConvMat,package='Tiler')
   
