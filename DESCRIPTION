@@ -7,4 +7,4 @@ Author: Aaron Robotham
 Maintainer: Aaron Robotham <aaron.robotham@uwa.edu.au>
 Description: This software tiles surveys on the AAT
 License: LGPL-3
-Depends: sphereplot, rgl, celestial, plotrix, fields, xtable
+Depends: sphereplot, rgl, celestial, plotrix, fields, xtable, magicaxis

@@ -2,8 +2,9 @@ MakeWaste <-
 function (data = "find", directory = "test", save = FALSE, type = "png", 
     basedir = "~/Work/R/GAMA/Tiling") 
 {
+  options(stringsAsFactors = FALSE)
   data(PriConvMat,package='Tiler')
-  
+  PriConvMat[,'Pty']=as.character(PriConvMat[,'Pty'])
     if (is.character(data)) {
         if (data == "find") {
             load(paste(basedir, "/", directory, "/stopstate.r", 
@@ -44,11 +45,11 @@ function (data = "find", directory = "test", save = FALSE, type = "png",
         fibmaxpos = c(fibmaxpos, fibtot[i] + length(which(data$fibstats[i, 
             ] == 0)))
     }
-    par(mar = c(5.1, 4.1, 4.1, 2.1))
-    plot(cbind(data$tilelim[, 1], fibtot), type = "l", xlab = "Tile No.", 
+    par(mar = c(3.1, 3.1, 2.1, 2.1))
+    magplot(cbind(data$tilelim[, 1], fibtot), type = "l", xlab = "Tile No.", 
         ylab = "Fibres", xlim = c(min(data$tilelim[, 1]), max(c(min(data$tilelim[, 
             1]) + 20, max(data$tilelim[, 1])))), ylim = c(0, 
-            400), col = "purple", main = paste("Fibre Priorities for",min(data$assign[, 2]),"-", max(data$assign[, 2]), " Tiles", sep = ""))
+            400), col = "purple", main = paste("Fibre Priorities for",min(data$assign[, 2]),"-", max(data$assign[, 2]), " Tiles", sep = ""), grid=TRUE)
     legendtext = c("Fibs", "Non-Broken", "Total Fibres")
     for (i in 1:length(which(PriConvMat[, "WastePlot"] == TRUE))) {
       select=data$assign[,3] == PriConvMat[PriConvMat[, "WastePlot"] == TRUE,1][i] & data$assign[, 2] > 0
@@ -65,7 +66,7 @@ function (data = "find", directory = "test", save = FALSE, type = "png",
     legend("bottomright", lty = c(2, 3, 1, PriConvMat[PriConvMat[, 
         "WastePlot"] == TRUE, "Lty"]), legend = legendtext, col = c("grey", 
         "red", "purple", PriConvMat[PriConvMat[, "WastePlot"] == 
-            TRUE, "Colour"]))
+            TRUE, "Colour"]), bg='white')
     if (save) {
         dev.off()
     }

@@ -6,6 +6,7 @@ function (data = "find", directory = "test", TileCat = TileV4f,
     if(any(colnames(TileCat)=='CATAID')){colnames(TileCat)[colnames(TileCat)=='CATAID']='CATA_INDEX'}
     options(stringsAsFactors=FALSE)
     data(PriConvMat,package='Tiler')
+    PriConvMat[,'Pty']=as.character(PriConvMat[,'Pty'])
     if (is.character(data)) {
         if (data == "find") {
             load(paste(basedir, "/", directory, "/stopstate.r", 
@@ -56,11 +57,11 @@ function (data = "find", directory = "test", TileCat = TileV4f,
         }
     }
     layout(matrix(c(1, 2), ncol = 2), widths = c(0.8, 0.2), heights = 1)
-    par(mar = c(5.1, 4.1, 4.1, 0))
-    plot(data$tilelim[sub, c(3, 4)], xlab = "RA/deg", ylab = "Dec/deg", 
+    par(mar = c(3.1, 3.1, 2.1, 0))
+    magplot(data$tilelim[sub, c(3, 4)], xlab = "RA/deg", ylab = "Dec/deg", 
         asp = 1, xlim = RAreg + c(-0.5, 0.5), ylim = DECreg + 
             c(-0.5, 0.5), main = paste("Tiling Map for ", loc, 
-            " ", min(sub), "-", max(sub), " Tiles", sep = ""))
+            " ", min(sub), "-", max(sub), " Tiles", sep = ""), grid=TRUE)
     for (i in 1:length(sub)) {
         draw.circle(as.numeric(data$tilelim[data$tilelim[, 1] == 
             sub[i], 3]), as.numeric(data$tilelim[data$tilelim[, 
@@ -87,7 +88,7 @@ function (data = "find", directory = "test", TileCat = TileV4f,
             "TilePlot"], "Colour"])
     }
     plot.new()
-    par(mar = c(5.1, 0, 4.1, 0))
+    par(mar = c(3.1, 0, 2.1, 0))
     legendtext = {
     }
     for (i in 1:length(which(PriConvMat[, "TilePlot"] == TRUE))) {
@@ -95,9 +96,9 @@ function (data = "find", directory = "test", TileCat = TileV4f,
             "TilePlot"] == TRUE, 1][i]))
     }
     legend(x = -0.5, y = 0.9, pch = 1, legend = legendtext, col = PriConvMat[PriConvMat[, 
-        "TilePlot"] == TRUE, "Colour"], bty = "n", title = "Tiling Cat\nPiorities")
+        "TilePlot"] == TRUE, "Colour"], bty = "n", title = "Tiling Cat\nPiorities", bg='white')
     layout(1)
-    par(mar = c(5.1, 4.1, 4.1, 2.1))
+    par(mar = c(3.1, 3.1, 2.1, 2.1))
     if (save) {
         dev.off()
     }

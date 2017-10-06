@@ -72,12 +72,12 @@ function (data = "find", directory = "test", save = FALSE, type = "png",
     }
     layout(mat = matrix(c(2, 1), nrow = 2, ncol = 1), heights = c(0.25, 
         0.7))
-    par(mar = c(5.1, 4.1, 0, 2.1))
-    image(z = data$maglim, breaks = c(0, 0.8, 0.9, 0.95, 0.99, 
+    par(mar = c(3.1, 3.1, 0, 2.1))
+    magimage(z = data$maglim, breaks = c(0, 0.8, 0.9, 0.95, 0.99, 
         1 - 1e-08, 1), col = grey(0:5/5), y = c(seq(15, 24, by = 0.1)), 
         x = sort(data$tilelim[, 1]), xlab = "Tile No.", ylab = "Magnitude", 
         xlim = c(min(data$tilelim[, 1]), max(c(min(data$tilelim[, 
-            1]) + 20, max(data$tilelim[, 1])))))
+            1]) + 20, max(data$tilelim[, 1])))), magmap=FALSE, grid=TRUE)
     abline(v = c(loc80, loc90), lty = 3)
     if (compline >= 0.95) {
         lines(stepfun(x = 2:max(which(data$maglim < 0.95, arr.ind = TRUE)[, 
@@ -95,15 +95,15 @@ function (data = "find", directory = "test", save = FALSE, type = "png",
         abline(v = loc100, lty = 3)
     }
     legend("bottomright", pch = 22, pt.bg = grey(0:5/5), legend = c("<80%", 
-        "<90%", "<95%", "<99%", "<100%", "100%"))
+        "<90%", "<95%", "<99%", "<100%", "100%"), bg='white')
     abline(v = c(all80, all90, all95, all99), lty = 2, col = "red")
-    plot.new()
-    par(mar = c(0, 4.1, 4.1, 2.1))
-    par(usr = c(0, max(c(100, 20 + max(data$assign[, 2]))), 0, 
-        1))
+    par(mar = c(0, 3.1, 2.1, 2.1))
+    magplot(0,0, xlim= c(min(data$tilelim[, 1]), max(c(min(data$tilelim[, 
+            1]) + 20, max(data$tilelim[, 1])))), ylim=c(0,1), type='n', labels=FALSE, grid=TRUE)
     lines(data$tilelim)
     title(main = paste("Completeness Map for", min(data$assign[, 
         2]), "-", max(data$assign[, 2]), " Tiles", sep = ""))
+    magaxis(side = 4)
     box()
     lines(c(all80, all80), c(0, data$tilelim[all80, 2]), lty = 2, 
         col = "red")
@@ -124,7 +124,7 @@ function (data = "find", directory = "test", save = FALSE, type = "png",
     text(x = c(all80, all90, all95, all99), y = rep(0.2, 4), 
         labels = c(all80, all90, all95, all99))
     layout(1)
-    par(mar = c(5.1, 4.1, 4.1, 2.1))
+    par(mar = c(3.1, 3.1, 2.1, 2.1))
     if (save) {
         dev.off()
     }

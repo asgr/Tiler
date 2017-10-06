@@ -27,17 +27,17 @@ function (data = "find", directory = "test", save = FALSE, type = "png",
                 width = 800/72, height = 480/72, onefile = TRUE)
         }
     }
-    par(mar = c(5.1, 4.1, 4.1, 2.1))
-    image(x = data$tilelim[, 1], y = 1:400, z = data$fibstats, 
+    par(mar = c(3.1, 3.1, 2.1, 2.1))
+    magimage(x = data$tilelim[, 1], y = 1:400, z = data$fibstats, 
         breaks = c(0, 0.5, 1.5, 2.5, 3.5, 4.5, 100), col = c("white", 
             "lightgreen", "yellow", "blue", "orange", "red"), 
         xlab = "Tile No.", ylab = "Pivot No.", xlim = c(min(data$tilelim[, 
             1]), max(c(min(data$tilelim[, 1]) + 20, max(data$tilelim[, 
             1])))), main = paste("Pivot usage for 1-", max(data$assign[, 
-            2]), " Tiles", sep = ""))
+            2]), " Tiles", sep = ""), magmap=FALSE, grid=TRUE)
     legend("topright", legend = c("Target", "Guide", "Sky", "Spec", 
         "Broken", "Unused"), col = c("lightgreen", "yellow", 
-        "blue", "orange", "red", "white"), pch = 1)
+        "blue", "orange", "red", "white"), pch = 1, bg='white')
     if (save) {
         dev.off()
     }

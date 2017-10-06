@@ -59,7 +59,7 @@ hatObs$z=hatObs$z-hatObs$z
 
 if(plot){
 par(mar=c(5.1,4.1,4.1,2.1))
-image(x=hatAll$x,y=hatAll$y,z=1-hatObs$z/hatAll$z,zlim=c(0,1),col=c(grey(0:19/19),rainbow(80,start=0,end=2/3)),xlab='RA/deg',ylab='Dec/deg',main=paste(loc,'Obs/Tar Contrast for\nR Petro',lorpet,'to',hirpet,'After',assignlim,'Tiles'),asp=1/cos((pi/180)*(DECreg[2]+DECreg[1])/2))
+magimage(x=hatAll$x,y=hatAll$y,z=1-hatObs$z/hatAll$z,zlim=c(0,1),col=c(grey(0:19/19),rainbow(80,start=0,end=2/3)),xlab='RA/deg',ylab='Dec/deg',main=paste(loc,'Obs/Tar Contrast for\nR Petro',lorpet,'to',hirpet,'After',assignlim,'Tiles'),asp=1/cos((pi/180)*(DECreg[2]+DECreg[1])/2), magmap=FALSE, grid=TRUE)
 }
 
 if(plot & save){dev.off()}
