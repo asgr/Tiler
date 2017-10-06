@@ -4,7 +4,7 @@ function (directory = "test", TileCat = TileV4f, basedir = "~/Work/R/GAMA/Tiling
     dvipsdir = "/sw/bin", position = "g09") 
 {
     options(stringsAsFactors=FALSE)
-    data(SweaveFile,package='Tiler')
+    #data(SweaveFile,package='Tiler')
     reset = FALSE
     if (exists("stopstate")) {
         temp = stopstate
@@ -17,10 +17,9 @@ function (directory = "test", TileCat = TileV4f, basedir = "~/Work/R/GAMA/Tiling
         0.99)) + min(stopstate$tilelim[, "No."]), envir = .GlobalEnv)
     assign("basedir", basedir, envir = .GlobalEnv)
     assign("position", position, envir = .GlobalEnv)
-    writeLines(SweaveFile, paste(basedir, "/", directory, "/report.Rnw", 
-        sep = ""))
-    Sweave(paste(basedir, "/", directory, "/report.Rnw", sep = ""), 
-        stylepath = TRUE)
+    #writeLines(SweaveFile, paste(basedir, "/", directory, "/report.Rnw", sep = ""))
+    #Sweave(paste(basedir, "/", directory, "/report.Rnw", sep = ""), stylepath = TRUE)
+    Sweave(system.file("extdata", 'report.Rnw', package="Tiler"), stylepath = TRUE)
     if (reset) {
         assign("stopstate", temp, envir = .GlobalEnv)
     }

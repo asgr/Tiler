@@ -1,0 +1,99 @@
+% -*- mode: noweb; noweb-default-code-mode: R-mode; -*-
+\documentclass[a4paper]{article}
+
+\title{\Sexpr{stopstate$loc} region analysis}
+\author{Aaron Robotham}
+
+\SweaveOpts{echo=FALSE}
+\usepackage{a4wide}
+\usepackage{longtable}
+
+\begin{document}
+
+\maketitle
+
+This document contains the main useful bits of analysis for \Sexpr{stopstate$loc} made using \Sexpr{stopstate$current} and \Sexpr{stopstate$catname}. The original call made to generate this field was:\\\\ \verb|\Sexpr{stopstate$args}.|
+
+\section{Tiling region}
+
+Figure \ref{tileplot} shows the tile centres used for the 2dF for tiles 1 to \Sexpr{max(stopstate$assign[,2])} and Figure \ref{angplot} shows the local completeness map for tile \Sexpr{angcompnum} which is the tile at which 99\% of the survey area is locally 80\% complete. The first tile was configured on \Sexpr{stopstate$tilelim[1,'Date']} and the last on \Sexpr{stopstate$tilelim[length(stopstate$tilelim[,1]),'Date']}.
+
+\begin{figure}[htbp]
+\begin{center}
+<<fig=TRUE,echo=FALSE,width=11.11,height=6.66>>=
+MakeTilePlot(data=stopstate,TileCat=TileCat,left=FALSE,basedir=basedir,position=position)
+@
+\caption{Positions of used and proposed tile centres for \Sexpr{stopstate$loc}.}
+\label{tileplot}
+\end{center}
+\end{figure}
+
+\begin{figure}[htbp]
+\begin{center}
+<<fig=TRUE,echo=FALSE,width=11.11,height=6.66>>=
+MakeCircDen(data=stopstate,TileCat=TileCat,res=0.05,assignlim=angcompnum,basedir=basedir,position=position)
+@
+\caption{99\% completeness map at tile \Sexpr{length(which(stopstate$tilelim[,'AngComp']<0.99))+1}, which is the tile at which 99\% of the survey region is locally at least 80\% complete. Only makes sense when the actual completeness level has been achieved, else it will be a plot of the most recent survey state. Blue to red specifies regions that are 0\% to 80\% complete, white to black specifies regions that are 80\% to 100\% complete. The latter range is the target completeness specified at the GAMA meeting.}
+\label{angplot}
+\end{center}
+\end{figure}
+\clearpage
+\section{Fibre Usage}
+
+The distribution of object priorities as a function of tile number can be seen in Figure \ref{wasteplot}. The individual fibe usage map is in Figure \ref{fibuse}.
+
+\begin{figure}[htbp]
+\begin{center}
+<<fig=TRUE,echo=FALSE,width=11.11,height=6.0>>=
+MakeWaste(data=stopstate)
+@
+\caption{The fibre priority usage as a function of tile number for \Sexpr{stopstate$loc}}
+\label{wasteplot}
+\end{center}
+\end{figure}
+
+\begin{figure}[htbp]
+\begin{center}
+<<fig=TRUE,echo=FALSE,width=11.11,height=6.0>>=
+MakeFibGrid(data=stopstate)
+@
+\caption{Individual fibre usage as a function of tile number for \Sexpr{stopstate$loc}. Strictly speaking all numbers refer to pivot numbers, which should (but importantly MIGHT NOT) correlate 1:1 with the actual fibre numbers.}
+\label{fibuse}
+\end{center}
+\end{figure}
+
+\clearpage
+\section{Completeness Map}
+
+\begin{figure}[htbp]
+\begin{center}
+<<fig=TRUE,echo=FALSE,width=11.11,height=6.66>>=
+output=MakeCompMap(data=stopstate)
+@
+\caption{The current completeness map for \Sexpr{stopstate$loc}}
+\label{compmap}
+\end{center}
+\end{figure}
+
+The completeness map of different magnitude objects can be found in Figure \ref{compmap}. The key results in terms of top priority object completeness are that the entire survey achieves 95\% completeness after tile \Sexpr{output[3,2]} and 99\% completeness after tile \Sexpr{output[4,2]}. All individual 0.1 magnitude bins achieve 95\% completeness after tile \Sexpr{output[8,2]} and 99\% completeness after tile \Sexpr{output[9,2]}. A note of caution: these figures for the completeness only make sense if the region has been configured at least to the tile where the appropriate completeness has actually been achieved, else the figure quoted will just be the final tile number $+1$. A table of the number of tiles required for different levels of completeness can be seen in Table \ref{comptile}.
+<<results=tex>>=
+x.big=xtable(data.frame(Level=c('80%','90%','95%','99%','100%'), TotalComp=output[1:5,2],MagComp=output[6:10,2],AngComp=c(length(which(stopstate$tilelim[,'AngComp']<0.8))+1, length(which(stopstate$tilelim[,'AngComp']<0.9))+1, length(which(stopstate$tilelim[,'AngComp']<0.95))+1, length(which(stopstate$tilelim[,'AngComp']<0.99))+1, length(which(stopstate$tilelim[,'AngComp']<1))+1)), display=c('d','s','d','d','d'), digits=c(1,1,1,1,1),caption='Table showing number of tiles required for different levels of completeness. TotalComp refers to the full survey completeness, MagComp refers to the tile at which all 0.1 magnitude bins have reached the specified level of completeness and finally AngComp refers to the tile at which the specified fraction of the survey area contains 0.14 degree angular regions that are locally at least 80 percent complete. If the actual required number of tiles has not yet been reached then these numbers will be meaningless, and equal to the final tile number $+1$.',label='comptile')
+print(x.big,tabular.environment='longtable',floating=FALSE,include.rownames=FALSE)
+rm(x.big)
+@
+
+\clearpage
+\section{Full Tile Data}
+
+Table \ref{tilelim} shows the full tile data for the GAMA configuration.
+
+<<results=tex>>=
+x.big=xtable(stopstate$tilelim[,c('No.',      'Comp','RA','Dec','Left','AngComp','AngComp5','Plate','Date')],display=c('d','d','f','f','f','d','f','f','d','s'),digits=c(3,3,5,2,2,1,5,5,1,5),caption='All tile location and survey completeness data. Values quoted refer to the survey state after the specified tile has been laid, hence when finished the completeness equals 100 percent.',label='tilelim')
+print(x.big,tabular.environment='longtable',floating=FALSE,include.rownames=FALSE,size='tiny')
+rm(x.big)
+rm(output)
+@
+
+\end{document}
+
+

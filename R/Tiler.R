@@ -83,7 +83,7 @@ if(continue==FALSE & tileplus>0){
 	#stopstate.r is all of the available tiling information for a run, so when continuing this must be loaded
 	load(paste(basedir,directory,'Observed/stopstate.r',sep=''))
 	#print out a summary for a sanity check
-    message{'Continuing from where we were, the current tile assignment summary info is:'}
+    message('Continuing from where we were, the current tile assignment summary info is:')
 	print(summary(stopstate$assign))
 	#Various vectors and tables are stripped out of the stopstate image and assigned to the correct object for the session
 	AssignOrder=stopstate$assign
