@@ -34,7 +34,7 @@ function (data = "find", directory = "test", save = FALSE, type = "png",
         xlab = "Tile No.", ylab = "Pivot No.", xlim = c(min(data$tilelim[, 
             1]), max(c(min(data$tilelim[, 1]) + 20, max(data$tilelim[, 
             1])))), main = paste("Pivot usage for 1-", max(data$assign[, 
-            2]), " Tiles", sep = ""), magmap=FALSE, grid=TRUE)
+            2]), " Tiles", sep = ""), ylim=c(0,400), magmap=FALSE, grid=TRUE, asp=FALSE, useRaster=FALSE)
     legend("topright", legend = c("Target", "Guide", "Sky", "Spec", 
         "Broken", "Unused"), col = c("lightgreen", "yellow", 
         "blue", "orange", "red", "white"), pch = 1, bg='white')
