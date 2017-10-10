@@ -4,6 +4,7 @@ function (data = "find", directory = "test", save = FALSE, type = "png",
 {
   options(stringsAsFactors = FALSE)
   data(PriConvMat,package='Tiler')
+  PriConvMat[,'Colour']=as.character(PriConvMat[,'Colour'])
   PriConvMat[,'Pty']=as.character(PriConvMat[,'Pty'])
     if (is.character(data)) {
         if (data == "find") {
@@ -49,7 +50,7 @@ function (data = "find", directory = "test", save = FALSE, type = "png",
     magplot(cbind(data$tilelim[, 1], fibtot), type = "l", xlab = "Tile No.", 
         ylab = "Fibres", xlim = c(min(data$tilelim[, 1]), max(c(min(data$tilelim[, 
             1]) + 20, max(data$tilelim[, 1])))), ylim = c(0, 
-            400), col = "purple", main = paste("Fibre Priorities for",min(data$assign[, 2]),"-", max(data$assign[, 2]), " Tiles", sep = ""), grid=TRUE)
+            400), col = "purple", main = paste("Fibre Priorities for ",min(data$assign[, 2]),"-", max(data$assign[, 2]), " Tiles", sep = ""), grid=TRUE)
     legendtext = c("Fibs", "Non-Broken", "Total Fibres")
     for (i in 1:length(which(PriConvMat[, "WastePlot"] == TRUE))) {
       select=data$assign[,3] == PriConvMat[PriConvMat[, "WastePlot"] == TRUE,1][i] & data$assign[, 2] > 0
