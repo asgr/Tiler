@@ -75,10 +75,10 @@ function (data = "find", directory = "test", save = FALSE, type = "png",
     par(mar = c(3.1, 3.1, 0, 2.1))
     plot.new()
     plot.window(xlim = c(min(data$tilelim[, 1]), max(c(min(data$tilelim[,1]) + 20, max(data$tilelim[, 1])))), ylim=c(15,24))
-    magaxis(frame=TRUE, grid=TRUE)
+    magaxis(frame=TRUE, grid=TRUE, xlab = "Tile No.", ylab = "Magnitude")
     magimage(z = data$maglim, breaks = c(0, 0.8, 0.9, 0.95, 0.99, 
         1 - 1e-08, 1), col = grey(0:5/5), y = c(seq(15, 24, by = 0.1)), 
-        x = sort(data$tilelim[, 1]), xlab = "Tile No.", ylab = "Magnitude", magmap=FALSE, add=TRUE)
+        x = sort(data$tilelim[, 1]), magmap=FALSE, add=TRUE)
     abline(v = c(loc80, loc90), lty = 3)
     if (compline >= 0.95) {
         lines(stepfun(x = 2:max(which(data$maglim < 0.95, arr.ind = TRUE)[, 
@@ -100,7 +100,7 @@ function (data = "find", directory = "test", save = FALSE, type = "png",
     abline(v = c(all80, all90, all95, all99), lty = 2, col = "red")
     par(mar = c(0, 3.1, 2.1, 2.1))
     magplot(0,0, xlim= c(min(data$tilelim[, 1]), max(c(min(data$tilelim[, 
-            1]) + 20, max(data$tilelim[, 1])))), ylim=c(0,1), type='n', labels=FALSE, grid=TRUE, xlab='Tile Number', ylab='Magnitude')
+            1]) + 20, max(data$tilelim[, 1])))), ylim=c(0,1), type='n', labels=FALSE, grid=TRUE, ylab='Completeness')
     lines(data$tilelim)
     title(main = paste("Completeness Map for", min(data$assign[, 
         2]), "-", max(data$assign[, 2]), " Tiles", sep = ""))
