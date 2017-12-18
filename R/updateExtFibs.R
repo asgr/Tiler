@@ -1,7 +1,7 @@
 updateExtFibs <-
 function(configdir='/Applications/Work/configure-7.10.Darwin'){
 configdir=path.expand(configdir)
-configdir=paste(configdir,'/',sep='')
+configdir=paste(configdir,'/data_files/',sep='')
 
 check=try(download.file('ftp://ftp.aao.gov.au/pub/2df/2dF_distortion.map',destfile='temp'))
 if(class(check)!='try-error'){file.rename(from='temp',to=paste(configdir,'2dF_distortion.map',sep=''))}
